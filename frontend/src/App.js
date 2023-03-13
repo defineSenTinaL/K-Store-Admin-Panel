@@ -6,6 +6,8 @@ import MainLayout from './components/MainLayout';
 import ProductList from './pages/ProductList';
 import ProductAdd from './pages/ProductAdd';
 import ProductDelete from './pages/ProductDelete';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App () {
   return (
@@ -17,6 +19,7 @@ function App () {
           <Route path='productList' element={<ProductList />} />
           <Route path='addProduct' element={<ProductAdd />} />
           <Route path='deleteProduct' element={<ProductDelete />} />
+
 
         </Route>
       </Routes>

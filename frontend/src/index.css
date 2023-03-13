@@ -87,3 +87,17 @@ main::-webkit-scrollbar {
 .fs-7 {
   font-size: 100px;
 }
+
+.basicDetails {
+  width: 78.5vw;
+  height: 100vh;
+  text-align: center;
+  background: rgb(201, 173, 173);
+}
+
+.fullDetails {
+  width: 78.5vw;
+  height: 100vh;
+  text-align: center;
+  background: rgb(19, 16, 16);
+}
