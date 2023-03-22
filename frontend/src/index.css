@@ -87,9 +87,3 @@ main::-webkit-scrollbar {
 .fs-7 {
   font-size: 100px;
 }
-
-.productButton {
-  display: flex;
-  justify-content: end;
-  align-items: end;
-}

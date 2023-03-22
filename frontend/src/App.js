@@ -1,12 +1,11 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate} from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import MainLayout from "./components/MainLayout";
-import ProductList from "./pages/ProductList";
-import ProductAdd from "./pages/ProductAdd";
-import ProductDelete from "./pages/ProductDelete";
-import { BasicDetails, FullDetails, Images, Description, Keyword, MoreDetails } from "./pages/ProductAdd";
+import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import MainLayout from './components/MainLayout';
+import ProductList from './pages/ProductList';
+import ProductAdd, { BasicDetails, Description, FullDetails, Images, Keyword, MoreDetails } from './pages/ProductAdd';
+import ProductDelete from './pages/ProductDelete';
 
 function App() {
 	return (
@@ -26,11 +25,10 @@ function App() {
 					</Route>
 					<Route path="deleteProduct" element={<ProductDelete />} />
 
-					{/* <Route path="*" element={<Navigate to="/admin"/>}/> */}
-				</Route>
-			</Routes>
-		</Router>
-	);
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
