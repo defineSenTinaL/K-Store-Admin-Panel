@@ -131,7 +131,7 @@ const MainLayout = () => {
               key: "brandList",
               icon: <SiBrandfolder className='fs-4' />,
               label: "Brand List",
-            },
+            }
           ]}
         />
       </Sider>
