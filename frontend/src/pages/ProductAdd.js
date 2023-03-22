@@ -5,9 +5,8 @@ import { VscSymbolKeyword } from "react-icons/vsc";
 import { BsImages } from "react-icons/bs";
 import { BiDetail } from "react-icons/bi";
 import { CgDetailsMore } from "react-icons/cg";
-import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import CustomInput from "../components/CustomInput";
-
 
 const items = [
   {
@@ -43,7 +42,7 @@ const items = [
 ];
 
 const ProductAdd = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [current, setCurrent] = useState("");
   const onClick = (e) => {
     navigate(e.key);
@@ -53,61 +52,89 @@ const navigate = useNavigate();
 
   return (
     <div>
-      <h2 className="mb-4">Add a Product</h2>
+      <h2 className='mb-4'>Add a Product</h2>
       <Menu
         onClick={onClick}
         selectedKeys={[current]}
-        mode="horizontal"
+        mode='horizontal'
         items={items}
       />
-			<Outlet/>
+      <Outlet />
 
-      <div className="productButton">
-      <Space wrap>
-      <Button type="primary">
-            Cancel
-          </Button>
-          <Button  type="primary">
-            Confirm
-          </Button>
-          </Space>
-        </div>
+      <div className='productButton'>
+        <Space wrap>
+          <Button type='primary'>Cancel</Button>
+          <Button type='primary'>Confirm</Button>
+        </Space>
+      </div>
     </div>
   );
 };
 
 export const BasicDetails = () => {
-	return (
-    <div className="bg-white mh-100 mw-100 mx-auto p-4">
+  return (
+    <div className='bg-white mh-100 mw-100 mx-auto p-4'>
       <form action=''>
-      <p> Product Code</p>
-      <CustomInput type='text' placeholder='ASIN Code' id='asin_code' />
-      <p> Brand Name</p>
-      <CustomInput type='text' placeholder='Brand Name' id='brand_name' />
-
+        <p> Product Code</p>
+        <CustomInput type='text' placeholder='ASIN Code' id='asin_code' />
+        <p> Item Name</p>
+        <CustomInput type='text' placeholder='Brand Name' id='item_name' />
+        <p> Brand Name</p>
+        <CustomInput type='text' placeholder='Brand Name' id='brand_name' />
+        <p> Manufacturer Part Number</p>
+        <CustomInput
+          type='text'
+          placeholder='Brand Name'
+          id='manufacturer_part_number'
+        />
+        <p> Number of Items</p>
+        <CustomInput
+          type='text'
+          placeholder='Brand Name'
+          id='number_of_items'
+        />
+        <p> Unit Count</p>
+        <CustomInput type='text' placeholder='Brand Name' id='unit_count' />
+        <p> Unit Count Type</p>
+        <CustomInput
+          type='text'
+          placeholder='Brand Name'
+          id='unit_count_type'
+        />
+        <p> Manufacturer</p>
+        <CustomInput type='text' placeholder='Brand Name' id='manufacturer' />
+        <div class='input-group mb-3'>
+          <div class='input-group-prepend'></div>
+          <select class='custom-select' id='inputGroupSelect01'>
+            <option selected>Choose...</option>
+            <option value='1'>One</option>
+            <option value='2'>Two</option>
+            <option value='3'>Three</option>
+          </select>
+        </div>
       </form>
     </div>
   );
-}
+};
 
 export const FullDetails = () => {
-	return <div>Full Details</div>;
-}
+  return <div>Full Details</div>;
+};
 
 export const Images = () => {
-	return <div>Images</div>;
-}
+  return <div>Images</div>;
+};
 
 export const Description = () => {
-	return <div>Description</div>;
-}
+  return <div>Description</div>;
+};
 
 export const Keyword = () => {
-	return <div>Keywords</div>;
-}
+  return <div>Keywords</div>;
+};
 
 export const MoreDetails = () => {
-	return <div>More Details</div>;
-}
+  return <div>More Details</div>;
+};
 
 export default ProductAdd;
