@@ -6,6 +6,8 @@ import MainLayout from './components/MainLayout';
 import ProductList from './pages/ProductList';
 import ProductAdd, { BasicDetails, Description, FullDetails, Images, Keyword, MoreDetails } from './pages/ProductAdd';
 import ProductDelete from './pages/ProductDelete';
+import CategoryAdd from './pages/CategoryAdd';
+import CategoryList from './pages/CategoryList';
 
 function App() {
 	return (
@@ -24,6 +26,10 @@ function App() {
 						<Route path="moreDetails" element={<MoreDetails />} />
 					</Route>
 					<Route path="deleteProduct" element={<ProductDelete />} />
+					<Route path="addCategory" element={<CategoryAdd />} />
+					<Route path="categoryList" element={<CategoryList />} />
+
+
 
         </Route>
       </Routes>

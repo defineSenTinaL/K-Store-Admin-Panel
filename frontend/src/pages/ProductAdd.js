@@ -75,6 +75,34 @@ export const BasicDetails = () => {
   return (
     <div className='bg-white mh-100 mw-100 mx-auto p-4'>
       <form action=''>
+        <div class='input-group mb-3'>
+          <div class='input-group-prepend'></div>
+          <select class='custom-select' id='inputGroupSelect01'>
+            <option selected>Choose...</option>
+            <option value='1'>Home Improvemnt Tools</option>
+            <option value='2'>Home Decor</option>
+            <option value='3'>Home and Kitchen Appliances</option>
+          </select>
+        </div>
+        <div class='input-group mb-3'>
+          <div class='input-group-prepend'></div>
+          <select class='custom-select' id='inputGroupSelect01'>
+            <option selected>Choose...</option>
+            <option value='1'>Power Tools</option>
+            <option value='2'>Sanitary</option>
+            <option value='3'>Hardware and Electrical</option>
+          </select>
+        </div>
+        <div class='input-group mb-3'>
+          <div class='input-group-prepend'></div>
+          <select class='custom-select' id='inputGroupSelect01'>
+            <option selected>Choose...</option>
+            <option value='1'>Angle Grinder</option>
+            <option value='2'>Blower</option>
+            <option value='3'>Angle Drill</option>
+          </select>
+        </div>
+
         <p> Product Code</p>
         <CustomInput type='text' placeholder='ASIN Code' id='asin_code' />
         <p> Item Name</p>
@@ -103,15 +131,6 @@ export const BasicDetails = () => {
         />
         <p> Manufacturer</p>
         <CustomInput type='text' placeholder='Brand Name' id='manufacturer' />
-        <div class='input-group mb-3'>
-          <div class='input-group-prepend'></div>
-          <select class='custom-select' id='inputGroupSelect01'>
-            <option selected>Choose...</option>
-            <option value='1'>One</option>
-            <option value='2'>Two</option>
-            <option value='3'>Three</option>
-          </select>
-        </div>
       </form>
     </div>
   );
