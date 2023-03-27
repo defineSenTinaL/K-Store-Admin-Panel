@@ -1,0 +1,108 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.css";
+
+summary {
+	display: block;
+	cursor: pointer;
+	outline: 0;
+}
+
+summary::-webkit-details-marker {
+	display: none;
+}
+
+.action-button {
+	background: #ddd;
+	font-size: 12px;
+	color: #444;
+	border: 0px solid #444;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin-left: 10px;
+}
+
+.tree-nav__item {
+	display: block;
+	white-space: nowrap;
+	color: #444;
+	position: relative;
+}
+.tree-nav__item.is-expandable::before {
+	border-left: 1px solid #ccc;
+	content: "";
+	height: 100%;
+	left: 0.8rem;
+	position: absolute;
+	top: 2.4rem;
+	height: calc(100% - 2.4rem);
+}
+.tree-nav__item .tree-nav__item {
+	margin-left: 2.4rem;
+}
+.tree-nav__item.is-expandable[open] > .tree-nav__item-title::before {
+	font-family: "ionicons";
+	transform: rotate(90deg);
+}
+.tree-nav__item.is-expandable > .tree-nav__item-title {
+	padding-left: 2.4rem;
+}
+.tree-nav__item.not-expandable > .tree-nav__item-title {
+	padding-left: 2.4rem;
+}
+.tree-nav__item.is-expandable > .tree-nav__item-title::before {
+	top: 5px;
+	position: absolute;
+	will-change: transform;
+	transition: transform 300ms ease;
+	font-family: "ionicons";
+	color: #000;
+	font-size: 1rem;
+	content: "\f125";
+	left: 0;
+	display: inline-block;
+	width: 1.6rem;
+	text-align: center;
+}
+
+.tree-nav__item.not-expandable > .tree-nav__item-title::before{
+	top: -2px;
+	position: absolute;
+	color: #000;
+	font-size: 1.5rem;
+	font-weight: bolder;
+	content: "-";
+	left: 0;
+	display: inline-block;
+	width: 1.5rem;
+	text-align: center;
+}
+
+.tree-nav__item-title {
+	cursor: pointer;
+	display: flex;
+	outline: 0;
+	color: #000;
+	font-size: 1.4rem;
+	/* line-height: 3.2rem; */
+	width: 100%;
+	justify-content: space-between;
+}
+.tree-nav__item-title .icon {
+	display: inline;
+	padding-left: 1.6rem;
+	margin-right: 0.8rem;
+	color: #aaa;
+	font-size: 1.4rem;
+	position: relative;
+}
+.tree-nav__item-title .icon::before {
+	top: 0;
+	position: absolute;
+	left: 0;
+	display: inline-block;
+	width: 1.6rem;
+	text-align: center;
+}
+
+.tree-nav__item-title::-webkit-details-marker {
+	display: none;
+}
