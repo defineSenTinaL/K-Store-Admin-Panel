@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table } from 'antd';
+import { Table, Card, Col, Row, Statistic, Space } from 'antd';
 
 const columns = [
   {
@@ -32,39 +32,71 @@ for (let i = 0; i < 46; i++) {
 const Dashboard = () => {
   return (
     <div>
+      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
       <h3 className='mb-4'>Dashboard</h3>
-      <div className='d-flex justify-content-between align-items-center gap-3'>
-        <div className='d-flex flex-grow-1 bg-white p-3 rounded-3'>
-            <div>
-              <p className='mb-4 fs-4'>Today Sales</p> <h4>$1000</h4>
-            </div>
-        </div>
-        <div className='d-flex flex-grow-1 bg-white p-3 rounded-3'>
-            <div>
-              <p className='mb-4 fs-4'>Lowest Order Value Today</p> <h4>$1000</h4>
-            </div>
-        </div>
-        <div className='d-flex flex-grow-1 bg-white p-3 rounded-3'>
-            <div>
-              <p className='mb-4 fs-4'>Total Order Delivered</p> <h4>$1000</h4>
-            </div>
-        </div>
+      <Row gutter={16}>
+    <Col span={12}>
+      <Card bordered={false}>
+        <Statistic
+          title="Today Sales"
+          value={500}
+          precision={2}
+          valueStyle={{
+            color: '#3f8600',
+          }}
+        />
+      </Card>
+    </Col>
+    <Col span={12}>
+      <Card bordered={false}>
+        <Statistic
+          title="Return Orders"
+          value={5}
+          precision={2}
+          valueStyle={{
+            color: '#cf1322',
+          }}
+        />
+      </Card>
+    </Col>
+  </Row>
+      
+      <div>
+      <Row gutter={16}>
+    <Col span={12}>
+      <Card bordered={false}>
+        <Statistic
+          title="Ship order today"
+          value={50}
+          precision={2}
+          valueStyle={{
+            color: '#3f8600',
+          }}
+        />
+      </Card>
+    </Col>
+    <Col span={12}>
+      <Card bordered={false}>
+        <Statistic
+          title="Profit"
+          value={1000}
+          precision={2}
+          valueStyle={{
+            color: '#cf1322',
+          }}
+        />
+      </Card>
+    </Col>
+  </Row>
       </div>
-      <div className='mt-4 d-flex justify-content-between align-items-center gap-3'>
-      <div className='d-flex flex-grow-1 bg-white p-3 rounded-3'>
-        <h6>Active Users</h6> <h3 className='mb-5 fs-7 p-5'> 45</h3>
-      </div>
-      <div className='d-flex flex-grow-1 bg-white p-3 rounded-3'>
-        <h6>Order to be shipped to today</h6> <h3 className='mb-5 fs-7 p-5'> 45</h3>
-      </div>
-      </div>
-      <div className='mt-4'>
-        <h3 className='mb-4'>Recent Orders</h3>
+          <div>
+          <h3 className='mb-4'>Recent Orders</h3>
         <div>
         <Table columns={columns} dataSource={data1} />
         </div>
       </div>
-    </div>
+  </Space>
+</div>
   )
 }
 
