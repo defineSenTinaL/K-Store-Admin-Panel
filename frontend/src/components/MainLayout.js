@@ -16,7 +16,6 @@ import { Layout, Menu, theme } from "antd";
 import { Outlet } from "react-router-dom";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import profile from "../extras/pp.jpg";
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -61,22 +60,12 @@ const MainLayout = () => {
                   label: "Add a Product",
                 },
                 {
-                  key: "deleteProduct",
-                  icon: <AiOutlineDelete className='fs-4' />,
-                  label: "Delete a Product",
-                },
-                {
-                  key: "editProduct",
-                  icon: <TbEdit className='fs-4' />,
-                  label: "Edit a Product",
-                },
-                {
                   key: "productList",
                   icon: <AiOutlineShoppingCart className='fs-4' />,
                   label: "Product List",
                 },
                 {
-                  key: "brand",
+                  key: "brandList",
                   icon: <SiBrandfolder className='fs-4' />,
                   label: "Brand List",
                 },
@@ -92,12 +81,6 @@ const MainLayout = () => {
                   key: "addCategory",
                   icon: <AiOutlineAppstoreAdd className='fs-4' />,
                   label: "Add a Category",
-                },
-
-                {
-                  key: "deleteCategory",
-                  icon: <MdDeleteOutline className='fs-4' />,
-                  label: "Delete a Category",
                 },
 
                 {
@@ -126,12 +109,6 @@ const MainLayout = () => {
                 },
               ],
             },
-
-            {
-              key: "brandList",
-              icon: <SiBrandfolder className='fs-4' />,
-              label: "Brand List",
-            }
           ]}
         />
       </Sider>
@@ -154,7 +131,7 @@ const MainLayout = () => {
             <div></div>
             <div className='d-flex gap-3 align-items-center'>
               <div>
-                <img height={32} width={32} src={profile} alt='' />
+                <img height={32} width={32} alt='' />
               </div>
               <div>
                 <h5 className='mb-0'>Aditya</h5>

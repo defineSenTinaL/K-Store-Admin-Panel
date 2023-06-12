@@ -1,36 +1,41 @@
 import React from 'react'
-import { Table } from 'antd';
+import { Space, Table } from 'antd';
 
 const columns = [
-    {
-      title: 'S No',
-      dataIndex: 'key',
-    },
-    {
-      title: 'Brand',
-      dataIndex: 'brand',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-    },
-    {
-        title: 'Price',
-        dataIndex: 'price',
-    },
-  ];
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age',
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a>Invite {record.name}</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
   const data1 = [];
   for (let i = 0; i < 46; i++) {
     data1.push({
       key: i,
-      brand: `Samsung ${1}`,
-      name: `Galaxy S21 FE ${i}`,
-      quantity: 32,
-      price: '$799',
+      name: `Aditya`,
+      age: `21`,
+      address: 'New York No. 1 Lake Park',
     });
   }
 
@@ -39,8 +44,13 @@ const ProductList = () => {
     <div>
         <h2 className='mb-4'>Product List</h2>
         <div>
-        <Table columns={columns} dataSource={data1} />
-
+        <Table
+        columns={columns}
+        pagination={{
+          position: ["none", "bottomCenter"],
+        }}
+        dataSource={data1}
+      />
         </div>
     </div>
   )
