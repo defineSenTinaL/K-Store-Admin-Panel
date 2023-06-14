@@ -1,4 +1,4 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
 import {
   AiOutlineDashboard,
   AiOutlineShoppingCart,
@@ -12,17 +12,64 @@ import {
 } from "react-icons/md";
 import { TbUserOff, TbUsers, TbUserCircle, TbEdit } from "react-icons/tb";
 import { SiBrandfolder } from "react-icons/si";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme, Button, Dropdown, message, Space, Avatar } from "antd";
+
 import { Outlet } from "react-router-dom";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import firebase from "firebase/compat/app";
+
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../features/user/userSlice";
+
+
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+
+  const dispatch = useDispatch();
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  const handleMenuClick = (key) => {
+    
+    //console.log('click', key);
+    // if(key === 'profile')
+    // console.log("hola")
+    // else
+      logout();
+  };
+
+  const items = [
+    {
+      label: 'Logout',
+      key: 'logout',
+    },
+    
+  ];
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
+
+  // firebase logout
+
+  const logout = () => { 
+
+    firebase.auth().signOut()
+
+    dispatch(logoutUser(null))
+
+    navigate('/login');
+
+  }
+
+ 
 
   return (
     <Layout>
@@ -131,7 +178,17 @@ const MainLayout = () => {
             <div></div>
             <div className='d-flex gap-3 align-items-center'>
               <div>
-                <img height={32} width={32} alt='' />
+              <Space wrap>
+    <Dropdown menu={menuProps}>
+    <Avatar
+    size={{
+      xl: 50,
+    }}
+    icon={<UserOutlined />}
+  >
+    </Avatar>
+    </Dropdown>
+  </Space>
               </div>
               <div>
                 <h5 className='mb-0'>Aditya</h5>

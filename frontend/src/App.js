@@ -15,7 +15,7 @@ import CategoryList from './pages/CategoryList';
 import { auth } from './firebase';
 import { useDispatch, useSelector } from 'react-redux';
 //import  store from './store/configureStore';
-import { setLoggedInUser, logoutUser } from './features/user/userSlice';
+import { setLoggedInUser } from './features/user/userSlice';
 
 
 const App = () => {
@@ -48,7 +48,7 @@ const App = () => {
 		<Router>
 			<Routes>
 
-				<Route path="/" element={<Login />} />
+				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/admin" element={<MainLayout />}>
 					<Route path="dashboard" element={<Dashboard />} />
