@@ -10,11 +10,12 @@ import {toast} from "react-toastify";
 import { auth } from '../../firebase.js';
 import { useDispatch } from 'react-redux';
 
-import { setLoggedInUser } from "../../features/user/userSlice";
+import { setLoggedInSeller } from "../../features/seller/sellerSlice";
 
-
+import { currentSeller } from "../../functions/auth";
 
 const FormItem = Form.Item;
+
 
 const Login = () => {
 
@@ -38,16 +39,22 @@ const Login = () => {
       try {
         const result = await auth.signInWithEmailAndPassword(email, password);
         
-        const {user} = result
-        const idTokenResult = await user.getIdTokenResult();
-        dispatch(
-					setLoggedInUser({
-					  email: user.email,
+        const seller = result.user;
+        const idTokenResult = await seller.getIdTokenResult();
+
+        currentSeller(idTokenResult.token)
+				.then((res) => {dispatch(
+					setLoggedInSeller({
+					  name: res.name,
+					  email: res.email,
 					  token: idTokenResult.token,
+            id: res.id,
 					})
 				  );
+				})
+				.catch((err) => console.log(err))
 
-          navigate('/admin/dashboard');
+         navigate('/dashboard');
       } catch (error) {
         console.log(error);
         toast.error(error.message)

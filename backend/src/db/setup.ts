@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Tigris } from '@tigrisdata/core';
 import { Product } from 'src/product/product.model';
+import { Seller } from 'src/seller/seller.model';
 
 @Injectable()
 export class TigrisSetupService {
@@ -11,7 +12,7 @@ export class TigrisSetupService {
       // ensure branch exists, create it if it needs to be created dynamically
       await tigrisClient.getDatabase().initializeBranch();
       // register schemas
-      await tigrisClient.registerSchemas([Product]);
+      await tigrisClient.registerSchemas([Seller, Product]);
       console.log('Setup complete...');
       process.exit(0);
     } catch (e) {

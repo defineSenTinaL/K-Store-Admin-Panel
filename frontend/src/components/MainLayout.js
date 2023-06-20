@@ -2,17 +2,15 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from "@ant-design/
 import {
   AiOutlineDashboard,
   AiOutlineShoppingCart,
-  AiOutlineDelete,
   AiOutlineAppstoreAdd,
 } from "react-icons/ai";
 import {
   MdOutlineCategory,
-  MdDeleteOutline,
   MdOutlineFormatListBulleted,
 } from "react-icons/md";
-import { TbUserOff, TbUsers, TbUserCircle, TbEdit } from "react-icons/tb";
+import { TbUserOff, TbUsers, TbUserCircle } from "react-icons/tb";
 import { SiBrandfolder } from "react-icons/si";
-import { Layout, Menu, theme, Button, Dropdown, message, Space, Avatar } from "antd";
+import { Layout, Menu, theme, Dropdown, Space, Avatar } from "antd";
 
 import { Outlet } from "react-router-dom";
 import React, { useState } from "react";
@@ -21,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
 
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../features/user/userSlice";
+import { logoutSeller } from "../features/seller/sellerSlice";
 
 
 const { Header, Sider, Content } = Layout;
@@ -33,18 +31,22 @@ const MainLayout = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   const navigate = useNavigate();
 
-  const handleMenuClick = (key) => {
-    
-    //console.log('click', key);
-    // if(key === 'profile')
-    // console.log("hola")
-    // else
-      logout();
-  };
+const handleMenuClick = ({ key }) => {
+  if (key === 'profile') {
+    profile();
+  } else if (key === 'logout') {
+    logout();
+  }
+};
 
   const items = [
+    {
+      label: 'Profile',
+      key: 'profile',
+    },
     {
       label: 'Logout',
       key: 'logout',
@@ -63,10 +65,14 @@ const MainLayout = () => {
 
     firebase.auth().signOut()
 
-    dispatch(logoutUser(null))
+    dispatch(logoutSeller(null))
 
     navigate('/login');
+  }
 
+  const profile = () => { 
+
+    navigate('/profile');
   }
 
  
@@ -85,7 +91,7 @@ const MainLayout = () => {
           mode='inline'
           defaultSelectedKeys={[""]}
           onClick={({ key }) => {
-            if (key == "signout") {
+            if (key === "signout") {
             } else {
               navigate(key);
             }

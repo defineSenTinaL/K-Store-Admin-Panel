@@ -4,7 +4,7 @@
 
 # Firebase
 /config/*.json
-/config/fbServiceAccountKey.json
+
 
 # env file
 .env
