@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 import firebase from "firebase/compat/app";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutSeller } from "../features/seller/sellerSlice";
 
 
@@ -75,7 +75,8 @@ const handleMenuClick = ({ key }) => {
     navigate('/profile');
   }
 
- 
+  const loggedInSeller = useSelector(state => state.seller);
+  const { name, email } = loggedInSeller;
 
   return (
     <Layout>
@@ -197,8 +198,8 @@ const handleMenuClick = ({ key }) => {
   </Space>
               </div>
               <div>
-                <h5 className='mb-0'>Aditya</h5>
-                <p className='mb-0'>kumavat@gmail.com</p>
+                <h5 className='mb-0'>{name}</h5>
+                <p className='mb-0'>{email}</p>
               </div>
             </div>
           </div>

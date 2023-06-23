@@ -33,7 +33,8 @@ export const currentSeller = async (authToken) => {
     //console.log(seller.data);
     return seller.data;
   } catch (error) {
-    //console.log(error);
+    console.log(error.response); // Log the error response object
     throw new Error("Error retrieving current seller");
   }
 };
+

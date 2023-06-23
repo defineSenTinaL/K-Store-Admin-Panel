@@ -76,7 +76,7 @@ const App = () => {
     const unsubscribe = auth.onAuthStateChanged(async (seller) => {
       if (seller) {
         const idTokenResult = await seller.getIdTokenResult();
-        console.log("Seller", seller);
+        //console.log("Seller", seller);
 
         currentSeller(idTokenResult.token)
           .then((res) => {

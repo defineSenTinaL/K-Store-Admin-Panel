@@ -1,3 +1,14 @@
+// import * as admin from 'firebase-admin';
+
+// // eslint-disable-next-line @typescript-eslint/no-var-requires
+// const serviceAccount = require('./fbServiceAccountKey.json');
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
+
+// export default admin;
+
 import * as admin from 'firebase-admin';
 import { ServiceAccount } from 'firebase-admin';
 
