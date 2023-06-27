@@ -11,8 +11,14 @@ import {
   Res,
   UsePipes,
   ValidationPipe,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
-import { CategoryService } from './category.service';
+import {
+  CategoryService,
+  SubCategoryService,
+  SubSubCategoryService,
+} from './category.service';
 import {
   CreateCategoryDto,
   CreateSubCategoryDto,
@@ -35,7 +41,6 @@ export class CategoryController {
     private readonly loggingService: LoggingService,
   ) {}
 
-  // Category
   @Post()
   //@UsePipes(ValidationPipe)
   async createCategory(
@@ -116,8 +121,204 @@ export class CategoryController {
       return res.status(404).json({ error: 'Cant delete the Category' });
     }
   }
+}
 
-  // Sub Category
+// Sub Category
 
-  // Sub Sub Category
+@Controller('subcategory')
+@UseFilters(CategoryExceptionFilter)
+export class SubCategoryController {
+  constructor(
+    private readonly subCategoryService: SubCategoryService,
+    private readonly loggingService: LoggingService,
+  ) {}
+
+  @Post()
+  //@UsePipes(ValidationPipe)
+  async createSubCategory(
+    @Req() req: any,
+    @Body()
+    createSubCategoryDto: CreateSubCategoryDto,
+    @Res() res: any,
+  ) {
+    try {
+      // validate(createCategoryDto).then((errors) => {
+      //   // errors is an array of validation errors
+      //   if (errors.length > 0) {
+      //     console.log('validation failed. errors: ', errors);
+      //   } else {
+      //     console.log('validation succeed');
+      //   }
+      // });
+      const subCategory = await this.subCategoryService.createSubCategory(
+        createSubCategoryDto,
+      );
+      //const logMessage = `Sub Category created in Database (controller): ${subCategory}`;
+      //this.loggingService.log('info', logMessage);
+      return res.status(200).json(subCategory);
+      //return res.json('Category created in Database (controller)', subCategory);
+    } catch (error) {
+      const errorMessage = `Wrong Category Crendentials (controller): ${
+        (req.seller, createSubCategoryDto)
+      }`;
+      this.loggingService.log('error', errorMessage);
+      throw new HttpException(
+        'Failed to create subcategory',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Get()
+  async listSubCategory(@Res() res: any) {
+    try {
+      const subCategories = await this.subCategoryService.listSubCategory();
+      //console.log(categories);
+      return res.status(200).json(subCategories);
+    } catch (error) {
+      return res.status(404).json({ error: 'Sub Category not found' });
+    }
+  }
+
+  @Get(':slug')
+  async listOneSubCategory(@Param('slug') slug: string, @Res() res: any) {
+    try {
+      const subCategory = await this.subCategoryService.listOneSubCategory(
+        slug,
+      );
+      return res.status(200).json(subCategory);
+    } catch (error) {
+      // Handle the error and return an appropriate response
+      return res.status(404).json({ error: 'Sub Category not found' });
+    }
+  }
+
+  @Patch(':slug')
+  async updateSubCategory(
+    @Param('slug') slug: string,
+    @Body() updateSubCategoryDto: UpdateSubCategoryDto,
+    @Res() res: any,
+  ) {
+    try {
+      const subCategory = await this.subCategoryService.updateSubCategory(
+        slug,
+        updateSubCategoryDto,
+      );
+      return res.status(200).json(subCategory);
+    } catch (error) {
+      return res.status(404).json({ error: 'Cant update the Sub Category' });
+    }
+  }
+
+  @Delete(':slug')
+  async removeSubCategory(@Param('slug') slug: string, @Res() res: any) {
+    try {
+      const subCategory = await this.subCategoryService.removeSubCategory(slug);
+      return res.status(200).json(subCategory);
+    } catch (error) {
+      return res.status(404).json({ error: 'Cant delete the Sub Category' });
+    }
+  }
+}
+
+// Sub Sub Category
+
+@Controller('subsubcategory')
+@UseFilters(CategoryExceptionFilter)
+export class SubSubCategoryController {
+  constructor(
+    private readonly subSubCategoryService: SubSubCategoryService,
+    private readonly loggingService: LoggingService,
+  ) {}
+
+  @Post()
+  //@UsePipes(ValidationPipe)
+  async createSubSubCategory(
+    @Req() req: any,
+    @Body()
+    createSubSubCategoryDto: CreateSubSubCategoryDto,
+    @Res() res: any,
+  ) {
+    try {
+      // validate(createCategoryDto).then((errors) => {
+      //   // errors is an array of validation errors
+      //   if (errors.length > 0) {
+      //     console.log('validation failed. errors: ', errors);
+      //   } else {
+      //     console.log('validation succeed');
+      //   }
+      // });
+      console.log(createSubSubCategoryDto);
+      const subSubCategory =
+        await this.subSubCategoryService.createSubSubCategory(
+          createSubSubCategoryDto,
+        );
+      //const logMessage = `Category created in Database (controller): ${category}`;
+      //this.loggingService.log('info', logMessage);
+      return res.status(200).json(subSubCategory);
+      //return res.json('Category created in Database (controller)', category);
+    } catch (error) {
+      const errorMessage = `Wrong Category Crendentials (controller): ${
+        (req.seller, createSubSubCategoryDto)
+      }`;
+      this.loggingService.log('error', errorMessage);
+    }
+  }
+
+  @Get()
+  async listSubSubCategory(@Res() res: any) {
+    try {
+      const subSubCategories =
+        await this.subSubCategoryService.listSubSubCategory();
+      //console.log(categories);
+      return res.status(200).json(subSubCategories);
+    } catch (error) {
+      return res.status(404).json({ error: 'Sub Sub Category not found' });
+    }
+  }
+
+  @Get(':slug')
+  async listOneSubSubCategory(@Param('slug') slug: string, @Res() res: any) {
+    try {
+      const subSubCategory =
+        await this.subSubCategoryService.listOneSubSubCategory(slug);
+      return res.status(200).json(subSubCategory);
+    } catch (error) {
+      // Handle the error and return an appropriate response
+      return res.status(404).json({ error: 'Sub Sub Category not found' });
+    }
+  }
+
+  @Patch(':slug')
+  async updateSubSubCCategory(
+    @Param('slug') slug: string,
+    @Body() updateSubSubCategoryDto: UpdateSubSubCategoryDto,
+    @Res() res: any,
+  ) {
+    try {
+      const subSubCategory =
+        await this.subSubCategoryService.updateSubSubCategory(
+          slug,
+          updateSubSubCategoryDto,
+        );
+      return res.status(200).json(subSubCategory);
+    } catch (error) {
+      return res
+        .status(404)
+        .json({ error: 'Cant update the Sub Sub Category' });
+    }
+  }
+
+  @Delete(':slug')
+  async removeSubSubCCategory(@Param('slug') slug: string, @Res() res: any) {
+    try {
+      const subSubCategory =
+        await this.subSubCategoryService.removeSubSubCategory(slug);
+      return res.status(200).json(subSubCategory);
+    } catch (error) {
+      return res
+        .status(404)
+        .json({ error: 'Cant delete the Sub Sub Category' });
+    }
+  }
 }

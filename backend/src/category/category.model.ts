@@ -7,7 +7,7 @@ import {
 
 @TigrisCollection('Category')
 export class Category {
-  @PrimaryKey(TigrisDataTypes.INT64, { order: 1, autoGenerate: true })
+  @PrimaryKey(TigrisDataTypes.UUID, { order: 1, autoGenerate: true })
   id?: string;
 
   @Field()
@@ -25,7 +25,7 @@ export class Category {
 
 @TigrisCollection('SubCategory')
 export class SubCategory {
-  @PrimaryKey(TigrisDataTypes.INT64, { order: 1, autoGenerate: true })
+  @PrimaryKey(TigrisDataTypes.UUID, { order: 1, autoGenerate: true })
   id?: string;
 
   @Field(TigrisDataTypes.UUID)
@@ -46,7 +46,7 @@ export class SubCategory {
 
 @TigrisCollection('SubSubCategory')
 export class SubSubCategory {
-  @PrimaryKey(TigrisDataTypes.INT64, { order: 1, autoGenerate: true })
+  @PrimaryKey(TigrisDataTypes.UUID, { order: 1, autoGenerate: true })
   id?: string;
 
   @Field(TigrisDataTypes.UUID)

@@ -1,8 +1,20 @@
 import { ProductService } from './product.service';
-import { Controller, Get, Post, Res, Body, UseFilters } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Res,
+  Body,
+  UseFilters,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { LoggingService } from 'src/modules/logging/logging.service';
 import { Product } from 'src/product/product.model';
 import { ProductExceptionFilter } from 'src/filters/product-exception-filter';
+import { CreateProductDto } from './dto/create-product.dto';
+import { ImageKitService } from 'src/image/imagekit.service';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('product')
 @UseFilters(ProductExceptionFilter)
@@ -10,6 +22,7 @@ export class ProductController {
   constructor(
     private readonly productService: ProductService,
     private readonly loggingService: LoggingService,
+    private readonly imageKitService: ImageKitService,
   ) {}
 
   //Get ---> allProducts
@@ -28,17 +41,22 @@ export class ProductController {
   }
 
   @Post()
+  @UseInterceptors(FilesInterceptor('files'))
   async createProduct(
-    @Body() product: Product,
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() createProductDto: CreateProductDto,
     @Res() res: any,
   ): Promise<Product> {
     try {
-      const catalog = await this.productService.createProduct(product);
-      const logMessage = `Product created in Database (controller): ${catalog}`;
-      this.loggingService.log('info', logMessage);
+      console.log(files);
+      console.log(createProductDto);
+      const catalog = await this.productService.createProduct(
+        createProductDto,
+        files,
+      );
       return res.json('Product created in Database (controller)');
     } catch (error) {
-      const errorMessage = `Wrong Product Crendentials (controller): ${product}`;
+      const errorMessage = `Wrong Product Credentials (controller): ${createProductDto}`;
       this.loggingService.log('error', errorMessage);
       throw new Error(error.message);
     }

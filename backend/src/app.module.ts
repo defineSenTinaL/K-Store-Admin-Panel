@@ -12,6 +12,7 @@ import { DatabaseModule } from './modules/logging/database.module';
 import { LoggingService } from './modules/logging/logging.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Log, LogSchema } from './modules/logging/logging.schema';
+import { ImageKitModule } from './image/imagekit.module';
 //import { APP_PIPE } from '@nestjs/core';
 
 @Module({
@@ -24,6 +25,7 @@ import { Log, LogSchema } from './modules/logging/logging.schema';
     CategoryModule,
     LoggingModule,
     DatabaseModule,
+    ImageKitModule,
     MongooseModule.forFeature([{ name: Log.name, schema: LogSchema }]),
   ],
   controllers: [AppController],

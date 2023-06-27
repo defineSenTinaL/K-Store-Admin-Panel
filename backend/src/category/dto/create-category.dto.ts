@@ -17,6 +17,9 @@ export class CreateSubCategoryDto {
   @IsString()
   slug: string;
 
+  @IsString()
+  parentId: string;
+
   entryDate: Date;
 }
 
@@ -26,6 +29,9 @@ export class CreateSubSubCategoryDto {
 
   @IsString()
   slug: string;
+
+  @IsString()
+  parentId: string;
 
   entryDate: Date;
 }

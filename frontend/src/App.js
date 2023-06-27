@@ -13,14 +13,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import MainLayout from "./components/MainLayout";
 import ProductList from "./pages/ProductList";
-import ProductAdd, {
-  BasicDetails,
-  Description,
-  FullDetails,
-  Images,
-  Keyword,
-  MoreDetails,
-} from "./pages/ProductAdd";
+import ProductAdd from "./pages/ProductAdd";
 import CategoryAdd from "./pages/CategoryAdd";
 import CategoryList from "./pages/CategoryList";
 
@@ -35,20 +28,18 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 import PublicRoute from "./components/routes/PublicRoute";
 import Profile from "./pages/Profile";
 
-
-
 class ErrorBoundary extends Component {
   state = {
     hasError: false,
     error: null,
-    errorInfo: null
+    errorInfo: null,
   };
 
   componentDidCatch(error, errorInfo) {
     this.setState({
       hasError: true,
       error: error,
-      errorInfo: errorInfo
+      errorInfo: errorInfo,
     });
   }
 
@@ -66,8 +57,6 @@ class ErrorBoundary extends Component {
     return this.props.children;
   }
 }
-
-
 
 const App = () => {
   const dispatch = useDispatch();
@@ -96,39 +85,30 @@ const App = () => {
     return () => unsubscribe();
   });
 
-
-
   return (
     <ErrorBoundary>
-    <Router>
-      <ToastContainer />
-      <Routes>
-        <Route path="/login" element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
-        </Route>
-        <Route path="/register" element={<PublicRoute />}>
-          <Route path="/register" element={<Register/>} />
-        </Route>
-        <Route path="/" element={<ProtectedRoute />}>
-          <Route index element={<Navigate to="/login" replace />} />
-          <Route element={<MainLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="productList" element={<ProductList />} />
-            <Route path="addProduct" element={<ProductAdd />}>
-              <Route path="basicDetails" element={<BasicDetails />} />
-              <Route path="fullDetails" element={<FullDetails />} />
-              <Route path="images" element={<Images />} />
-              <Route path="description" element={<Description />} />
-              <Route path="keywords" element={<Keyword />} />
-              <Route path="moreDetails" element={<MoreDetails />} />
-            </Route>
-            <Route path="addCategory" element={<CategoryAdd />} />
-            <Route path="categoryList" element={<CategoryList />} />
+      <Router>
+        <ToastContainer />
+        <Routes>
+          <Route path="/login" element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
           </Route>
-        </Route>
-      </Routes>
-    </Router>
+          <Route path="/register" element={<PublicRoute />}>
+            <Route path="/register" element={<Register />} />
+          </Route>
+          <Route path="/" element={<ProtectedRoute />}>
+            <Route index element={<Navigate to="/login" replace />} />
+            <Route element={<MainLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="productList" element={<ProductList />} />
+              <Route path="addProduct" element={<ProductAdd />} />
+              <Route path="addCategory" element={<CategoryAdd />} />
+              <Route path="categoryList" element={<CategoryList />} />
+            </Route>
+          </Route>
+        </Routes>
+      </Router>
     </ErrorBoundary>
   );
 };
