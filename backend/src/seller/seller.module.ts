@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { SellerService } from './seller.service';
 import { SellerController } from './seller.controller';
-import { LoggingModule } from 'src/modules/logging/logging.module';
+import { Seller, SellerSchema } from './seller.schema';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [LoggingModule],
+  imports: [
+    MongooseModule.forFeature([{ name: Seller.name, schema: SellerSchema }]),
+  ],
   controllers: [SellerController],
-  providers: [SellerService, LoggingModule],
+  providers: [SellerService],
 })
 export class SellerModule {}

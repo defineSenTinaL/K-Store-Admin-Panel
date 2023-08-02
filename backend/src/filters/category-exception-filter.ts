@@ -1,15 +1,10 @@
 import { Catch, ArgumentsHost, Inject } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { LoggingService } from 'src/modules/logging/logging.service';
 import { GlobalExceptionFilter } from './global-exception.filter';
 import { CategoryException } from 'src/category/category.exception';
 
 @Catch(CategoryException)
 export class CategoryExceptionFilter extends GlobalExceptionFilter {
-  constructor(@Inject(LoggingService) loggingService: LoggingService) {
-    super(loggingService);
-  }
-
   catch(exception: CategoryException, host: ArgumentsHost) {
     // Custom error handling logic for products goes here
     // You can add additional handling specific to products
@@ -30,8 +25,6 @@ export class CategoryExceptionFilter extends GlobalExceptionFilter {
     const logMessage = `Category Exception caught: ${JSON.stringify(
       errorResponse,
     )}\n${exception}`;
-
-    this.loggingService.log('error', logMessage);
 
     super.catch(exception, host);
   }

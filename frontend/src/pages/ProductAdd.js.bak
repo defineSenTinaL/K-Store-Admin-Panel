@@ -1,0 +1,69 @@
+const formData = new FormData();
+    formData.append("productData", JSON.stringify(productData));
+
+    formData.append("category", basicDetails.selectedCategory);
+    formData.append("subCategory", basicDetails.selectedSubCategory);
+    formData.append("subSubCategory", basicDetails.selectedSubSubCategory);
+    formData.append("sku", basicDetails.sku);
+    formData.append("title", basicDetails.title);
+    formData.append("price", basicDetails.price);
+    formData.append("mrp", basicDetails.mrp);
+    formData.append("kharidi", basicDetails.kharidi);
+    formData.append("quantity", basicDetails.quantity);
+    formData.append("manufacturer", basicDetails.manufacturer);
+    formData.append("manufacturerDetail", basicDetails.manufacturerDetail);
+    formData.append(
+      "manufacturerPartNumber",
+      basicDetails.manufacturerPartNumber
+    );
+    formData.append("origin", basicDetails.origin);
+    formData.append("brand", basicDetails.brand);
+
+    // Full Details
+    formData.append("asin", fullDetails.asin);
+    formData.append("warranty", fullDetails.warranty);
+    formData.append("color", fullDetails.color);
+    formData.append("material", fullDetails.material);
+    formData.append("gst", fullDetails.gst);
+    formData.append("condition", fullDetails.condition);
+    formData.append("gift", fullDetails.gift);
+    formData.append("hsn", fullDetails.hsn);
+    formData.append("count", fullDetails.count);
+    //formData.append("component", JSON.stringify(fullDetails.component));
+    formData.append("fragile", fullDetails.fragile);
+    formData.append("shape", fullDetails.shape);
+    formData.append("model", fullDetails.model);
+    formData.append("style", fullDetails.style);
+    formData.append("delivery", fullDetails.delivery);
+    //formData.append("return", JSON.stringify(fullDetails.return));
+
+    // Description
+    //formData.append("description", description.description);
+    //formData.append("bullet", JSON.stringify(description.bullet));
+
+    // Keyword
+    //formData.append("keyword", JSON.stringify(keyword.keyword));
+
+    // More Details
+    // formData.append(
+    //   "productDimension",
+    //   JSON.stringify(moreDetails.productDimension)
+    // );
+    // formData.append(
+    //   "packageDimension",
+    //   JSON.stringify(moreDetails.packageDimension)
+    // );
+
+        images.forEach((image, index) => {
+      formData.append(`files`, image.originFileObj);
+    });
+
+    // for (const [key, value] of Object.entries(productData)) {
+    //   if (Array.isArray(value)) {
+    //     value.forEach((item) => {
+    //       formData.append(`${key}[]`, item);
+    //     });
+    //   } else {
+    //     formData.append(key, value);
+    //   }
+    // }

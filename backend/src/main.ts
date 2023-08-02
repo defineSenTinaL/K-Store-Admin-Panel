@@ -5,28 +5,23 @@ import { AppModule } from './app.module';
 import { FirebaseAuthMiddleware } from './middleware/firebase.middleware';
 import * as express from 'express';
 import { GlobalExceptionFilter } from './filters/global-exception.filter';
-import { LoggingService } from './modules/logging/logging.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors();
 
   // Provide the LoggingService to the GlobalExceptionFilter
-  const loggingService = app.get(LoggingService);
-  app.useGlobalFilters(new GlobalExceptionFilter(loggingService));
+  app.useGlobalFilters();
 
   app.use(express.json());
 
   //app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(5000, () => {
-    loggingService.log('info', 'Application started');
-  });
+  await app.listen(5000);
 
   // Handle application shutdown
   process.on('SIGINT', async () => {
     await app.close();
-    loggingService.log('info', 'Application shut down');
     process.exit(0);
   });
   //Tigris Data

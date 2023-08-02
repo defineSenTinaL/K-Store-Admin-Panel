@@ -1,15 +1,10 @@
 import { Catch, ArgumentsHost, Inject } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { LoggingService } from 'src/modules/logging/logging.service';
 import { GlobalExceptionFilter } from './global-exception.filter';
 import { SellerException } from 'src/seller/seller.exception';
 
 @Catch(SellerException)
 export class SellerExceptionFilter extends GlobalExceptionFilter {
-  constructor(@Inject(LoggingService) loggingService: LoggingService) {
-    super(loggingService);
-  }
-
   catch(exception: SellerException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
@@ -28,9 +23,6 @@ export class SellerExceptionFilter extends GlobalExceptionFilter {
     const logMessage = `Seller Exception caught: ${JSON.stringify(
       errorResponse,
     )}\n${exception}`;
-
-    this.loggingService.log('error', logMessage);
-
     super.catch(exception, host);
   }
 }

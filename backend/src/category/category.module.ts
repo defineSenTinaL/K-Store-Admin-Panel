@@ -9,11 +9,25 @@ import {
   SubCategoryController,
   SubSubCategoryController,
 } from './category.controller';
-import { LoggingModule } from 'src/modules/logging/logging.module';
 import { CategoryExceptionFilter } from 'src/filters/category-exception-filter';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  Category,
+  CategorySchema,
+  SubCategory,
+  SubCategorySchema,
+  SubSubCategory,
+  SubSubCategorySchema,
+} from './category.schema';
 
 @Module({
-  imports: [LoggingModule],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Category.name, schema: CategorySchema },
+      { name: SubCategory.name, schema: SubCategorySchema },
+      { name: SubSubCategory.name, schema: SubSubCategorySchema },
+    ]),
+  ],
   controllers: [
     CategoryController,
     SubCategoryController,
@@ -21,9 +35,9 @@ import { CategoryExceptionFilter } from 'src/filters/category-exception-filter';
   ],
   providers: [
     CategoryService,
+    CategoryExceptionFilter,
     SubCategoryService,
     SubSubCategoryService,
-    CategoryExceptionFilter,
   ],
 })
 export class CategoryModule {}

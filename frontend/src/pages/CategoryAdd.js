@@ -110,7 +110,7 @@ const CategoryAdd = () => {
         layout="vertical"
         className="category-form"
         onSubmit={handleCategorySubmit}
-        onFinish={handleSubcategorySubmit}
+        onFinish={handleCategorySubmit}
       >
         <Form.Item
           label="Category Name"
@@ -160,7 +160,7 @@ const CategoryAdd = () => {
           >
             {categories &&
               categories.map((category) => (
-                <Option key={category.id} value={category.id}>
+                <Option key={category._id} value={category._id}>
                   {category.name}
                 </Option>
               ))}
@@ -214,7 +214,7 @@ const CategoryAdd = () => {
             required
           >
             {categories.map((category) => (
-              <Option key={category.id} value={category.id}>
+              <Option key={category._id} value={category._id}>
                 {category.name}
               </Option>
             ))}
@@ -233,7 +233,7 @@ const CategoryAdd = () => {
             required
           >
             {filteredSubCategories.map((subcategory) => (
-              <Option key={subcategory.id} value={subcategory.id}>
+              <Option key={subcategory._id} value={subcategory._id}>
                 {subcategory.name}
               </Option>
             ))}

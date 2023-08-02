@@ -1,0 +1,190 @@
+// import {
+//   Field,
+//   PrimaryKey,
+//   TigrisCollection,
+//   TigrisDataTypes,
+// } from '@tigrisdata/core';
+
+// export class ProductDimension {
+//   @Field()
+//   length: number;
+
+//   @Field()
+//   breadth: number;
+
+//   @Field()
+//   height: number;
+// }
+
+// export class PackageDimension {
+//   @Field()
+//   length: number;
+
+//   @Field()
+//   breadth: number;
+
+//   @Field()
+//   height: number;
+// }
+
+// export class Variance {
+//   @Field()
+//   color: string;
+
+//   @Field()
+//   quantity: number;
+
+//   @Field()
+//   size: string;
+
+//   @Field()
+//   style: string;
+
+//   @Field()
+//   material: string;
+// }
+
+// export class ImageData {
+//   @Field()
+//   url: string;
+
+//   @Field()
+//   fileId: string;
+// }
+
+// @TigrisCollection('Product')
+// export class Product {
+//   @PrimaryKey(TigrisDataTypes.UUID, { order: 1, autoGenerate: true })
+//   id?: string;
+
+//   @Field()
+//   title: string;
+
+//   @Field()
+//   slug: string;
+
+//   @Field()
+//   brand: string;
+
+//   @Field()
+//   manufacturer: string;
+
+//   @Field()
+//   manufacturerDetail: string;
+
+//   @Field()
+//   manufacturerPartNumber: string;
+
+//   @Field()
+//   warranty: string;
+
+//   @Field()
+//   mrp: number;
+
+//   @Field()
+//   price: number;
+
+//   @Field()
+//   description: string;
+
+//   @Field({ elements: TigrisDataTypes.STRING })
+//   bullet: Array<string>;
+
+//   @Field()
+//   color: string;
+
+//   @Field()
+//   material: string;
+
+//   @Field()
+//   quantity: number;
+
+//   @Field({ default: 0 })
+//   sold: number;
+
+//   @Field()
+//   kharidi: number;
+
+//   @Field()
+//   category: string;
+
+//   @Field()
+//   subCategory: string;
+
+//   @Field()
+//   subSubCategory: string;
+
+//   @Field(TigrisDataTypes.ARRAY, { elements: ImageData })
+//   image: Array<ImageData>;
+
+//   @Field()
+//   asin: string;
+
+//   @Field()
+//   sku: string;
+
+//   @Field()
+//   gst: number;
+
+//   // new or used
+//   @Field()
+//   state: string;
+
+//   //gift wrap
+//   @Field()
+//   gift: string;
+
+//   @Field()
+//   origin: string;
+
+//   @Field()
+//   hsn: number;
+
+//   @Field({ elements: TigrisDataTypes.STRING })
+//   keyword: Array<string>;
+
+//   @Field()
+//   weight: number;
+
+//   @Field()
+//   productDimension: ProductDimension;
+
+//   //number of things in box
+//   @Field()
+//   count: number;
+
+//   // what comes with box
+//   @Field({ elements: TigrisDataTypes.STRING })
+//   component: string;
+
+//   @Field()
+//   fragile: string;
+
+//   @Field()
+//   packageDimension: PackageDimension;
+
+//   @Field()
+//   packageWeight: number;
+
+//   @Field()
+//   shape: string;
+
+//   @Field()
+//   model: string;
+
+//   @Field()
+//   style: string;
+
+//   @Field()
+//   size: string;
+
+//   // delivery time
+//   @Field()
+//   delivery: string;
+
+//   @Field()
+//   return: string;
+
+//   @Field({ elements: Variance })
+//   variants?: Array<Variance>;
+// }

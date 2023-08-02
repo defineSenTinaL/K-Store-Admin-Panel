@@ -1,0 +1,126 @@
+// const imageKit = new ImageKit({
+//     publicKey: process.env.REACT_IMAGEKIT_PUBLIC_KEY,
+//     urlEndpoint: process.env.REACT_IMAGEKIT_URL_ENDPOINT,
+//     authenticationEndpoint: process.env.REACT_IMAGEKIT_AUTH_ENDPOINT,
+//   });
+
+// const imageKit = new ImageKit({
+//     publicKey: "public_xL5mD9kBclemQcQwc/RQV5R04qY=",
+//     urlEndpoint: "https://ik.imagekit.io/dintly",
+//     authenticationEndpoint: "http://localhost:5000/images/auth",
+//   });
+
+
+
+// Cloudinary
+// import React, { useState } from 'react';
+// import { Image } from 'cloudinary-react';
+// import axios from 'axios';
+
+// const ImageUpload = ({ onUploadComplete }) => {
+//   const [images, setImages] = useState([]);
+
+//   const handleImageChange = (e) => {
+//     const files = e.target.files;
+//     const imageArray = [];
+
+//     for (let i = 0; i < files.length; i++) {
+//       const formData = new FormData();
+//       formData.append('file', files[i]);
+//       formData.append('upload_preset', 'kumavat');
+//       formData.append('cloud_name', 'dq4toulpx');
+
+//       axios.post('https://api.cloudinary.com/v1_1/dq4toulpx/image/upload', formData)
+//         .then((res) => {
+//           console.log(res);
+//           imageArray.push(res.data.url);
+//           if (imageArray.length === files.length) {
+//             setImages(imageArray);
+//             onUploadComplete(imageArray); // Pass the URLs to the parent component
+//           }
+//         })
+//         .catch((err) => {
+//           console.error('Error uploading image:', err);
+//         });
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <input type="file" multiple onChange={handleImageChange} />
+//       <div>
+//         {images.map((url, index) => (
+//           <Image key={index} cloudName="your_cloud_name" publicId={url} width="300" crop="scale" />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ImageUpload;
+
+
+
+
+// import { Upload } from "antd";
+// import React, { useState } from "react";
+// import Resizer from 'react-image-file-resizer';
+
+// const Images = ({ onSubmit }) => {
+//   const [fileList, setFileList] = useState([]);
+//   const [isResizing, setIsResizing] = useState(false);
+
+//   const onChange = async ({ fileList }) => {
+//     setIsResizing(true);
+
+//     const resizedFileList = await Promise.all(
+//       fileList.map(async (file) => {
+//         const resizedFile = await resizeImage(file.originFileObj);
+//         return {
+//           ...file,
+//           originFileObj: resizedFile,
+//           thumbUrl: URL.createObjectURL(resizedFile),
+//         };
+//       })
+//     );
+
+//     setIsResizing(false);
+//     setFileList(resizedFileList);
+//     console.log(resizedFileList);
+//     onSubmit(resizedFileList); // Pass the resizedFileList to the onSubmit callback
+//   };
+
+//   const resizeImage = (file) => {
+//     return new Promise((resolve) => {
+//       Resizer.imageFileResizer(
+//         file,
+//         720, // Adjust the maximum width as needed
+//         720, // Adjust the maximum height as needed
+//         'JPEG', // Output format ('JPEG', 'PNG', or 'WEBP')
+//         100, // Compression quality (0-100)
+//         0, // Rotation (0, 90, 180, or 270)
+//         (resizedFile) => {
+//           resolve(resizedFile);
+//         },
+//         'file', // Output type ('file', 'blob', or 'base64')
+//         200, // Max file size (in KB) for base64 output type (optional)
+//         200 // Max width (in pixels) for base64 output type (optional)
+//       );
+//     });
+//   };
+
+//   return (
+//     <>
+//       <Upload
+//         listType="picture-card"
+//         fileList={fileList}
+//         onChange={onChange}
+//         multiple // Enable multiple file upload
+//       >
+//         {isResizing ? "Uploading..." : fileList.length < 6 && "+ Upload"}
+//       </Upload>
+//     </>
+//   );
+// };
+
+// export default Images;

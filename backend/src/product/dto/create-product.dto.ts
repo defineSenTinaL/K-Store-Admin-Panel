@@ -1,18 +1,38 @@
-// export class ProductDimension {
-//   length: number;
-//   breadth: number;
-//   height: number;
-// }
+export interface ProductDimension {
+  length: number;
+  breadth: number;
+  height: number;
+}
 
-// export class PackageDimension {
-//   length: number;
-//   breadth: number;
-//   height: number;
-// }
+export interface PackageDimension {
+  length: number;
+  breadth: number;
+  height: number;
+}
+
+export interface Variance {
+  color: string;
+
+  quantity: number;
+
+  size: string;
+
+  style: string;
+
+  material: string;
+}
+
+export interface ImageData {
+  url: string;
+  fileId: string;
+}
+
 export class CreateProductDto {
   title: string;
+  slug: string;
   brand: string;
   manufacturer: string;
+  manufacturerDetail: string;
   manufacturerPartNumber: string;
   warranty: string;
   mrp: number;
@@ -26,26 +46,29 @@ export class CreateProductDto {
   category: string;
   subCategory: string;
   subSubCategory: string;
-  image: string[];
+  size: string;
+  image: ImageData[];
   asin: string;
   sku: string;
   gst: number;
-  conditon: string;
+  state: string;
   gift: string;
   origin: string;
   hsn: number;
   keyword: string[];
   weight: number;
-  productDimension: [];
+  productDimension: ProductDimension;
   count: number;
-  component: string[];
+  component: string;
   fragile: string;
-  packageDimension: [];
+  packageDimension: PackageDimension;
   packageWeight: number;
   shape: string;
   model: string;
   style: string;
   delivery: string;
-  return: string[];
+  return: string;
   sold: number;
+  productData: string;
+  variants?: Variance[];
 }

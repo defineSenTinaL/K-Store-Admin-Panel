@@ -1,40 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import ImageKit from 'imagekit';
 
 @Injectable()
 export class ImageKitService {
   private readonly imageKit: ImageKit;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     this.imageKit = new ImageKit({
-      publicKey: 'public_xL5mD9kBclemQcQwc/RQV5R04qY=',
-      privateKey: 'private_aGkkizwRSKElqa2QJ+alFv2nRlE=',
-      urlEndpoint: 'https://ik.imagekit.io/dintly',
+      publicKey: this.configService.get<string>('IMAGEKIT_PUBLIC_KEY', ''),
+      privateKey: this.configService.get<string>('IMAGEKIT_PRIVATE_KEY', ''),
+      urlEndpoint: this.configService.get<string>('IMAGEKIT_URL_ENDPOINT', ''),
     });
   }
+  getAuthenticationParameters() {
+    try {
+      return this.imageKit.getAuthenticationParameters();
+    } catch (error) {
+      const errorMessage = `Error in processing Product request (Service): ${error.message}`;
+      // this.loggingService.log('error', errorMessage);
+      throw new Error(errorMessage);
+    }
+  }
 
-  async uploadFiles(files: Express.Multer.File[]): Promise<string[]> {
-    const uploadPromises = files.map((file) => {
-      return new Promise<string>((resolve, reject) => {
-        this.imageKit
-          .upload({
-            file: file.buffer,
-            fileName: file.originalname,
-          })
-          .then((response) => {
-            resolve(response.url);
-          })
-          .catch((error) => {
-            reject(error);
-          });
+  async deleteImage(fileId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.imageKit.deleteFile(fileId, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(result);
+          resolve(result);
+        }
       });
     });
-
-    try {
-      const uploadResults = await Promise.all(uploadPromises);
-      return uploadResults;
-    } catch (error) {
-      throw error;
-    }
   }
 }

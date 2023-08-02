@@ -1,37 +1,27 @@
-import { IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsString, IsMongoId } from 'class-validator';
 
 export class CreateCategoryDto {
-  @Length(3, 20)
-  name: string;
-
+  @IsNotEmpty()
   @IsString()
-  slug: string;
-
-  entryDate: Date;
+  name: string;
 }
 
 export class CreateSubCategoryDto {
-  @Length(3, 20)
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
-  @IsString()
-  slug: string;
-
-  @IsString()
-  parentId: string;
-
-  entryDate: Date;
+  @IsNotEmpty()
+  @IsMongoId() // Validate that the category is a valid MongoDB ObjectId
+  parentId: string; // This should be a string since the ObjectId is a string
 }
 
 export class CreateSubSubCategoryDto {
-  @Length(3, 20)
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
-  @IsString()
-  slug: string;
-
-  @IsString()
-  parentId: string;
-
-  entryDate: Date;
+  @IsNotEmpty()
+  @IsMongoId() // Validate that the subcategory is a valid MongoDB ObjectId
+  parentId: string; // This should be a string since the ObjectId is a string
 }

@@ -1,25 +1,33 @@
-import {
-  Controller,
-  Post,
-  UploadedFiles,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { Controller, Delete, Get, Param, Res } from '@nestjs/common';
 import { ImageKitService } from './imagekit.service';
 
 @Controller('images')
 export class ImageController {
   constructor(private readonly imageKitService: ImageKitService) {}
 
-  @Post('upload')
-  @UseInterceptors(FilesInterceptor('files'))
-  async uploadImages(@UploadedFiles() files: Express.Multer.File[]) {
+  @Get('auth')
+  async getAuthenticationParameters(@Res() res: any) {
     try {
-      console.log(files);
-      //const uploadResults = await this.imageKitService.uploadFiles(files);
-      //return { success: true, uploadResults };
+      const auth = this.imageKitService.getAuthenticationParameters();
+      return res.json(auth);
     } catch (error) {
-      return { success: false, error: error.message };
+      const errorMessage = `Error in processing Product request (controller): ${error.message}`;
+      // this.loggingService.log('error', errorMessage);
+      throw new Error(errorMessage);
+    }
+  }
+
+  @Delete(':fileId')
+  async deleteImage(@Param('fileId') fileId: string, @Res() res: any) {
+    console.log(fileId);
+    try {
+      const result = await this.imageKitService.deleteImage(fileId);
+      console.log(result);
+      return res.json(result);
+    } catch (error) {
+      const errorMessage = `Error in processing Product request (controller): ${error.message}`;
+      // this.loggingService.log('error', errorMessage);
+      throw new Error(errorMessage);
     }
   }
 }

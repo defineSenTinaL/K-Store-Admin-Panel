@@ -7,6 +7,7 @@ import {
 } from "../../functions/category";
 
 const { Option } = Select;
+const { TextArea } = Input;
 
 const BasicDetails = ({ onSubmit }) => {
   const [form] = Form.useForm();
@@ -66,11 +67,18 @@ const BasicDetails = ({ onSubmit }) => {
     form
       .validateFields()
       .then((values) => {
+        // Convert numeric fields to numbers
+        values.price = +values.price;
+        values.mrp = +values.mrp;
+        values.kharidi = +values.kharidi;
+        values.quantity = +values.quantity;
+
         // Bind the form values to the corresponding fields
         values.selectedCategory = selectedCategory;
         values.selectedSubCategory = selectedSubCategory;
         values.selectedSubSubCategory = selectedSubSubCategory;
 
+        //console.log(values);
         // Call the onSubmit function passed as a prop and pass the form values
         onSubmit(values);
       })
@@ -80,14 +88,29 @@ const BasicDetails = ({ onSubmit }) => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        maxHeight: "400px",
+        overflowY: "scroll",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+    >
+      <style>
+        {`
+          /* Hide scrollbar for Chrome, Safari, and Opera */
+          ::-webkit-scrollbar {
+            display: none;
+          }
+
+          // /* Hide scrollbar for IE, Edge, and Firefox */
+          // -ms-overflow-style: none;  /* IE and Edge */
+          // scrollbar-width: none;  /* Firefox */
+        `}
+      </style>
       <h2>Basic Details</h2>
       <Form form={form} layout="vertical">
-        <Form.Item
-          label="Category"
-          required
-          tooltip="Select the category"
-        >
+        <Form.Item label="Category" required tooltip="Select the category">
           <Select
             size="large"
             placeholder="Select Category"
@@ -96,7 +119,7 @@ const BasicDetails = ({ onSubmit }) => {
             required
           >
             {categories.map((category) => (
-              <Option key={category.id} value={category.id}>
+              <Option key={category._id} value={category._id}>
                 {category.name}
               </Option>
             ))}
@@ -116,7 +139,7 @@ const BasicDetails = ({ onSubmit }) => {
             required
           >
             {filteredSubCategories.map((subcategory) => (
-              <Option key={subcategory.id} value={subcategory.id}>
+              <Option key={subcategory._id} value={subcategory._id}>
                 {subcategory.name}
               </Option>
             ))}
@@ -137,7 +160,7 @@ const BasicDetails = ({ onSubmit }) => {
             required
           >
             {filteredSubSubCategories.map((subSubCategory) => (
-              <Option key={subSubCategory.id} value={subSubCategory.id}>
+              <Option key={subSubCategory._id} value={subSubCategory._id}>
                 {subSubCategory.name}
               </Option>
             ))}
@@ -146,13 +169,29 @@ const BasicDetails = ({ onSubmit }) => {
         <br />
 
         <Form.Item
+          label="SKU (Stock Keeping Unit)"
+          name="sku"
+          rules={[{ required: true, message: "Please enter the SKU" }]}
+        >
+          <Input type="text" placeholder="Stock Keeping Unit" size="large" />
+        </Form.Item>
+        <br />
+
+        <Form.Item
           label="Title"
           name="title"
-          rules={[
-            { required: true, message: "Please enter the title name" },
-          ]}
+          rules={[{ required: true, message: "Please enter the title name" }]}
         >
-          <Input placeholder="Title Name" />
+          <Input type="text" placeholder="Title Name" size="large" />
+        </Form.Item>
+        <br />
+
+        <Form.Item
+          label="Brand Name"
+          name="brand"
+          rules={[{ required: true, message: "Please enter the Brand Name" }]}
+        >
+          <Input type="text" placeholder="Brand Name" size="large" />
         </Form.Item>
         <br />
 
@@ -161,10 +200,97 @@ const BasicDetails = ({ onSubmit }) => {
           name="price"
           rules={[{ required: true, message: "Please enter the price" }]}
         >
-          <Input type="number" placeholder="Price" />
+          <Input type="number" placeholder="Price" size="large" />
+        </Form.Item>
+        <br />
+
+        <Form.Item
+          label="MRP (Maximum Retail Price)"
+          name="mrp"
+          rules={[
+            { required: true, message: "Please enter Maximum Retail Price" },
+          ]}
+        >
+          <Input
+            type="number"
+            placeholder="Maximum Retail Price"
+            size="large"
+          />
+        </Form.Item>
+        <br />
+
+        <Form.Item
+          label="Kharidi (Purchase Price)"
+          name="kharidi"
+          rules={[{ required: true, message: "Please enter Purchase Price" }]}
+        >
+          <Input type="number" placeholder="Purchase Price" size="large" />
+        </Form.Item>
+        <br />
+
+        <Form.Item
+          label="Quantity"
+          name="quantity"
+          rules={[{ required: true, message: "Please enter Quantity" }]}
+        >
+          <Input type="number" placeholder="Quantity" size="large" />
+        </Form.Item>
+        <br />
+
+        <Form.Item
+          label="Manufacturer Name"
+          name="manufacturer"
+          rules={[
+            { required: true, message: "Please enter Manufacturer Name" },
+          ]}
+        >
+          <Input type="text" placeholder="Manufacturer Name" size="large" />
         </Form.Item>
 
-        {/* Add more form fields as needed */}
+        <br />
+
+        <Form.Item
+          label="Manufacturer Detail"
+          name="manufacturerDetail"
+          // rules={[
+          //   { required: true, message: "Please enter Manufacturer Details" },
+          // ]}
+        >
+          <TextArea type="text" placeholder="Manufacturer Details" />
+        </Form.Item>
+
+        <br />
+
+        <Form.Item
+          label="Manufacturer Part Number"
+          name="manufacturerPartNumber"
+          rules={[
+            {
+              required: true,
+              message: "Please enter Manufacturer Part Number",
+            },
+          ]}
+        >
+          <Input
+            type="text"
+            placeholder="Manufacturer Part Number"
+            size="large"
+          />
+        </Form.Item>
+        <br />
+
+        <Form.Item
+          label="Origin"
+          name="origin"
+          rules={[
+            {
+              required: true,
+              message: "Please enter the origin of product",
+            },
+          ]}
+        >
+          <Input type="text" placeholder="Origin of product" size="large" />
+        </Form.Item>
         <br />
 
         <div>
@@ -173,7 +299,7 @@ const BasicDetails = ({ onSubmit }) => {
           </Button>
         </div>
       </Form>
-    </>
+    </div>
   );
 };
 
