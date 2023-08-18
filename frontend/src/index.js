@@ -13,12 +13,15 @@ import { Provider } from 'react-redux';
 //store
 //const store = createStore(rootReducer, composeWithDevTools());
 
+// Get the stored last visited route from local storage
+const lastVisitedRoute = localStorage.getItem("lastVisitedRoute");
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   //<React.StrictMode>
     <Provider store={store}>
-      <App />
+      <App initialRoute={lastVisitedRoute} />
   </Provider>
   //</React.StrictMode>
 );

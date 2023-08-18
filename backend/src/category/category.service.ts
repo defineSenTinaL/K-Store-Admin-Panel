@@ -32,13 +32,14 @@ export class CategoryService {
   async createCategory(
     createCategoryDto: CreateCategoryDto,
   ): Promise<CategoryDocument> {
-    const { name } = createCategoryDto;
+    const { name, image } = createCategoryDto;
     // Generate the slug from the category name using slugify
     const slug = slugify(name, { lower: true, trim: true });
 
     const newCategory = new this.categoryModel({
       name,
       slug,
+      image,
     });
     return newCategory.save();
   }

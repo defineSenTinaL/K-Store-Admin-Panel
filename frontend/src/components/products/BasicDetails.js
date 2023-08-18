@@ -9,7 +9,7 @@ import {
 const { Option } = Select;
 const { TextArea } = Input;
 
-const BasicDetails = ({ onSubmit }) => {
+const BasicDetails = ({ data, onSubmit }) => {
   const [form] = Form.useForm();
   const [categories, setCategories] = useState([]);
   const [parentId, setParentId] = useState("");
@@ -25,6 +25,28 @@ const BasicDetails = ({ onSubmit }) => {
     loadCategories();
     loadSubCategories();
     loadSubSubCategories();
+
+    //console.log(data);
+
+    //If data prop is available (editing mode), set the initial form values
+    if (data) {
+      setSelectedCategory(data.selectedCategory);
+      setSelectedSubCategory(data.selectedSubCategory);
+      setSelectedSubSubCategory(data.selectedSubSubCategory);
+      form.setFieldsValue({
+        sku: data.sku,
+        title: data.title,
+        brand: data.brand,
+        price: data.price,
+        mrp: data.mrp,
+        kharidi: data.kharidi,
+        quantity: data.quantity,
+        manufacturer: data.manufacturer,
+        manufacturerDetail: data.manufacturerDetail,
+        manufacturerPartNumber: data.manufacturerPartNumber,
+        origin: data.origin,
+      });
+    }
   }, []);
 
   const loadCategories = () => {
@@ -64,27 +86,27 @@ const BasicDetails = ({ onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        // Convert numeric fields to numbers
-        values.price = +values.price;
-        values.mrp = +values.mrp;
-        values.kharidi = +values.kharidi;
-        values.quantity = +values.quantity;
+    // form
+    //   .validateFields()
+    //   .then((values) => {
+    //     // Convert numeric fields to numbers
+    //     values.price = +values.price;
+    //     values.mrp = +values.mrp;
+    //     values.kharidi = +values.kharidi;
+    //     values.quantity = +values.quantity;
 
-        // Bind the form values to the corresponding fields
-        values.selectedCategory = selectedCategory;
-        values.selectedSubCategory = selectedSubCategory;
-        values.selectedSubSubCategory = selectedSubSubCategory;
+    //     // Bind the form values to the corresponding fields
+    //     values.selectedCategory = selectedCategory;
+    //     values.selectedSubCategory = selectedSubCategory;
+    //     values.selectedSubSubCategory = selectedSubSubCategory;
 
-        //console.log(values);
-        // Call the onSubmit function passed as a prop and pass the form values
-        onSubmit(values);
-      })
-      .catch((error) => {
-        console.error("Form validation error:", error);
-      });
+    //     //console.log(values);
+    //     // Call the onSubmit function passed as a prop and pass the form values
+    //     onSubmit(values);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Form validation error:", error);
+    //   });
   };
 
   return (
@@ -109,14 +131,13 @@ const BasicDetails = ({ onSubmit }) => {
         `}
       </style>
       <h2>Basic Details</h2>
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical" initialValues={data}>
         <Form.Item label="Category" required tooltip="Select the category">
           <Select
             size="large"
             placeholder="Select Category"
             onChange={handleCategoryChange}
             value={selectedCategory}
-            required
           >
             {categories.map((category) => (
               <Option key={category._id} value={category._id}>
@@ -136,7 +157,6 @@ const BasicDetails = ({ onSubmit }) => {
             placeholder="Select Parent Subcategory"
             onChange={handleSubCategoryChange}
             value={selectedSubCategory}
-            required
           >
             {filteredSubCategories.map((subcategory) => (
               <Option key={subcategory._id} value={subcategory._id}>
@@ -157,7 +177,6 @@ const BasicDetails = ({ onSubmit }) => {
             placeholder="Select Parent Sub Sub Category"
             onChange={(value) => setSelectedSubSubCategory(value)}
             value={selectedSubSubCategory}
-            required
           >
             {filteredSubSubCategories.map((subSubCategory) => (
               <Option key={subSubCategory._id} value={subSubCategory._id}>

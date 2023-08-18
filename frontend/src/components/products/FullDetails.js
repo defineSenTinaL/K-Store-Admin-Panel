@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 
-const FullDetails = ({ onSubmit }) => {
+const FullDetails = ({ data, onSubmit }) => {
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -20,6 +20,29 @@ const FullDetails = ({ onSubmit }) => {
         console.error("Form validation error:", error);
       });
   };
+
+  // React.useEffect(() => {
+  //   if (data) {
+  //     form.setFieldsValue({
+  //       asin: data.asin,
+  //       warranty: data.warranty,
+  //       color: data.color,
+  //       material: data.material,
+  //       gst: data.gst,
+  //       condition: data.condition,
+  //       gift: data.gift,
+  //       hsn: data.hsn,
+  //       count: data.count,
+  //       component: data.component,
+  //       fragile: data.fragile,
+  //       shape: data.shape,
+  //       model: data.model,
+  //       style: data.style,
+  //       delivery: data.delivery,
+  //       return: data.return,
+  //     });
+  //   }
+  // }, [data]);
 
   return (
     <div
@@ -43,7 +66,7 @@ const FullDetails = ({ onSubmit }) => {
         `}
       </style>
       <h2>Full Details</h2>
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical " initialValues={data}>
         <Form.Item
           label="ASIN code"
           name="asin"

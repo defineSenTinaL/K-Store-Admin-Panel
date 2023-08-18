@@ -35,7 +35,7 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-const Description = ({onSubmit}) => {
+const Description = ({ data, onSubmit }) => {
   const [form] = Form.useForm();
 
 
@@ -46,10 +46,21 @@ const Description = ({onSubmit}) => {
     });
   };
 
+  // React.useEffect(() => {
+  //   console.log(data)
+  //   // if (data) {
+  //   //   form.setFieldsValue({
+  //   //     description: data.description,
+  //   //     bullet: data.bullet,
+  //   //   });
+  //   // }
+  // }, [data]);
+
   return (
     <div><Form
     name="dynamic_form_item"
     form={form}
+    initialValues={data}
     {...formItemLayoutWithOutLabel}
     style={{
       maxWidth: 600,

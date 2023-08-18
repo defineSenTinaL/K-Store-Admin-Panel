@@ -11,31 +11,34 @@ import { ImageKitModule } from './image/imagekit.module';
 import { ImageKitService } from './image/imagekit.service';
 
 //import { APP_PIPE } from '@nestjs/core';
+import { OrderModule } from './order/order.module';
+import { UserModule } from './user/user.module';
+import { CouponModule } from './coupon/coupon.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      ignoreEnvFile: false, // Load the .env file
+      ignoreEnvFile: false,
     }),
     ProductModule,
     SellerModule,
     CategoryModule,
     ImageKitModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://aditya03126:adityakumavat7020@cluster0.djvom5z.mongodb.net/?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRootAsync({
+      useFactory: async () => ({
+        uri: process.env.MONGODB_CONNECTION_URL,
+      }),
+    }),
+    // MongooseModule.forRoot(
+    //   'mongodb+srv://aditya03126:adityakumavat7020@cluster0.djvom5z.mongodb.net/?retryWrites=true&w=majority',
+    // ),
+    OrderModule,
+    UserModule,
+    CouponModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    FirebaseAuthMiddleware,
-    ImageKitService,
-    // {
-    //   provide: APP_PIPE,
-    //   useClass: ValidationPipe,
-    // },
-  ],
+  providers: [AppService, FirebaseAuthMiddleware, ImageKitService],
 })
 export class AppModule implements NestModule {
   async onModuleInit() {

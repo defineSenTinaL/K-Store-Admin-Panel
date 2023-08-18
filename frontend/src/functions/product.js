@@ -13,3 +13,13 @@ export const createProduct = async (productData) => {
     throw error;
   }
 };
+
+
+export const getProductById = async (id) => {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_API}/product/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

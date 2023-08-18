@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Form, Input, Button, Space } from 'antd';
 
@@ -34,7 +34,7 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-const MoreDetails = ({ onSubmit }) => {
+const MoreDetails = ({ data, onSubmit }) => {
   const [form] = Form.useForm();
 
   const handleFormSubmit = () => {
@@ -49,8 +49,26 @@ const MoreDetails = ({ onSubmit }) => {
     });
   };
 
+  // useEffect(() => {
+  //   console.log(data)
+  //   // if (data) {
+  //   //   form.setFieldsValue({
+  //   //     productDimension: {
+  //   //       length: data.productDimension.length.toString(),
+  //   //       breadth: data.productDimension.breadth.toString(),
+  //   //       height: data.productDimension.height.toString(),
+  //   //     },
+  //   //     packageDimension: {
+  //   //       length: data.packageDimension.length.toString(),
+  //   //       breadth: data.packageDimension.breadth.toString(),
+  //   //       height: data.packageDimension.height.toString(),
+  //   //     },
+  //   //   });
+  //   // }
+  // }, [data, form]);
+
   return (
-    <Form form={form}>
+    <Form form={form} initialValues={data}>
       <Form.Item label="Product Dimension" name="productDimension">
         <Input.Group compact>
           <Space>

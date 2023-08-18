@@ -4,6 +4,10 @@ export class CreateCategoryDto {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  image: string;
 }
 
 export class CreateSubCategoryDto {

@@ -1,15 +1,8 @@
 import React from "react";
 import { Form, Input, Button, Space } from "antd";
 
-const Variance = ({ onSubmit }) => {
+const Variance = ({ data, onSubmit }) => {
   const [form] = Form.useForm();
-
-  // const handleFormSubmit = () => {
-  //   form.validateFields().then((values) => {
-  //     console.log(values);
-  //     onSubmit(values);
-  //   });
-  // };
 
   const handleFormSubmit = () => {
     form.validateFields().then((values) => {
@@ -17,24 +10,39 @@ const Variance = ({ onSubmit }) => {
       const variances = values.variance.map((v) => ({
         size: v.size,
         color: v.color,
-        quantity: v.quantity,
+        quantity: +v.quantity,
         style: v.style,
         material: v.material,
       }));
-      console.log(variances);
       onSubmit(variances);
     });
   };
 
+  // React.useEffect(() => {
+  //   console.log(data);
+  //   // if (data) {
+  //   //   form.setFieldsValue({
+  //   //     variance: data.map((item, index) => ({
+  //   //       size: item.size,
+  //   //       color: item.color,
+  //   //       quantity: item.quantity.toString(),
+  //   //       style: item.style,
+  //   //       material: item.material,
+  //   //       key: index, // Required for Form.List
+  //   //     })),
+  //   //   });
+  //   // }
+  // }, [data, form]);
+
   return (
     <div>
-      <Form form={form}>
+      <Form form={form} initialValues={data}>
         <Form.List name="variance">
           {(fields, { add, remove }) => (
             <>
               {fields.map((field, index) => (
                 <Space
-                  key={`${field.name}-${field.fieldKey}`}
+                  key={field.key}
                   style={{ display: "flex", marginBottom: 8 }}
                   align="baseline"
                 >
@@ -42,7 +50,6 @@ const Variance = ({ onSubmit }) => {
                     {...field}
                     name={[field.name, "size"]}
                     fieldKey={[field.fieldKey, "size"]}
-                    key={`${field.name}-${field.fieldKey}-size`}
                   >
                     <Input type="text" placeholder="Size" />
                   </Form.Item>
@@ -50,7 +57,6 @@ const Variance = ({ onSubmit }) => {
                     {...field}
                     name={[field.name, "color"]}
                     fieldKey={[field.fieldKey, "color"]}
-                    key={`${field.name}-${field.fieldKey}-color`}
                   >
                     <Input type="text" placeholder="Color" />
                   </Form.Item>
@@ -58,7 +64,6 @@ const Variance = ({ onSubmit }) => {
                     {...field}
                     name={[field.name, "quantity"]}
                     fieldKey={[field.fieldKey, "quantity"]}
-                    key={`${field.name}-${field.fieldKey}-quantity`}
                   >
                     <Input type="number" placeholder="Quantity" />
                   </Form.Item>
@@ -66,7 +71,6 @@ const Variance = ({ onSubmit }) => {
                     {...field}
                     name={[field.name, "style"]}
                     fieldKey={[field.fieldKey, "style"]}
-                    key={`${field.name}-${field.fieldKey}-style`}
                   >
                     <Input type="text" placeholder="Style" />
                   </Form.Item>
@@ -74,7 +78,6 @@ const Variance = ({ onSubmit }) => {
                     {...field}
                     name={[field.name, "material"]}
                     fieldKey={[field.fieldKey, "material"]}
-                    key={`${field.name}-${field.fieldKey}-material`}
                   >
                     <Input type="text" placeholder="Material" />
                   </Form.Item>

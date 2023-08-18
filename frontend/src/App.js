@@ -1,72 +1,44 @@
-import React, { Component, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "./firebase";
+import { setLoggedInSeller } from "./features/seller/sellerSlice";
+import { currentSeller } from "./functions/auth";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
+import PublicRoute from "./components/routes/PublicRoute";
+import MainLayout from "./components/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import MainLayout from "./components/MainLayout";
 import ProductList from "./pages/ProductList";
 import ProductAdd from "./pages/ProductAdd";
 import CategoryAdd from "./pages/CategoryAdd";
 import CategoryList from "./pages/CategoryList";
-
-import { auth } from "./firebase";
-import { useDispatch } from "react-redux";
-//import  store from './store/configureStore';
-import { setLoggedInSeller } from "./features/seller/sellerSlice";
-
-import { currentSeller } from "./functions/auth";
-
-import ProtectedRoute from "./components/routes/ProtectedRoute";
-import PublicRoute from "./components/routes/PublicRoute";
 import Profile from "./pages/Profile";
-
-class ErrorBoundary extends Component {
-  state = {
-    hasError: false,
-    error: null,
-    errorInfo: null,
-  };
-
-  componentDidCatch(error, errorInfo) {
-    this.setState({
-      hasError: true,
-      error: error,
-      errorInfo: errorInfo,
-    });
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div>
-          <h1>Something went wrong.</h1>
-          <p>{this.state.error && this.state.error.toString()}</p>
-          <p>{this.state.errorInfo && this.state.errorInfo.componentStack}</p>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
+import ProductEdit from "./pages/ProductEdit";
+import ManageOrder from "./pages/ManageOrder";
+import Order from "./pages/Order";
+import ManageReturn from "./pages/ManageReturn";
+import OrderDetail from "./pages/OrderDetail";
+import OrderSchedule from "./pages/OrderSchedule";
+import ShiprocketLogin from "./pages/auth/ShiprocketLogin";
+import { setToken } from "./features/shiprocket/shiprocketSlice";
+import OrderReturn from "./pages/OrderReturn";
+import { Spin } from "antd";
 
 const App = () => {
   const dispatch = useDispatch();
-  // to check firebase auth state, it is also used to prevent memory leak after using unsubscribe it will clear the store
+  //const { loading } = useSelector((state) => state.loading);
+  const [initialRoute, setInitialRoute] = useState("/"); // Default initial route
+  const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
+    //dispatch(setLoading());
     const unsubscribe = auth.onAuthStateChanged(async (seller) => {
       if (seller) {
         const idTokenResult = await seller.getIdTokenResult();
-        //console.log("Seller", seller);
-
         currentSeller(idTokenResult.token)
           .then((res) => {
             dispatch(
@@ -80,36 +52,60 @@ const App = () => {
           })
           .catch((err) => console.log(err));
       }
+      //dispatch(resetLoading());
+      setLoading(false);
     });
-    // cleanUp
     return () => unsubscribe();
-  });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("shiprocketToken");
+    if (storedToken) {
+      dispatch(setToken(storedToken));
+    }
+    setLoading(false);
+    const lastVisitedRoute = localStorage.getItem("lastVisitedRoute");
+    setInitialRoute(lastVisitedRoute || "/");
+  }, [dispatch]);
+
+  if (isLoading) {
+    // Show loading spinner while data is being loaded
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
-    <ErrorBoundary>
-      <Router>
-        <ToastContainer />
-        <Routes>
-          <Route path="/login" element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
+    <Router>
+      <ToastContainer />
+      <Routes>
+        <Route path="/login" element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
+        <Route path="/register" element={<PublicRoute />}>
+          <Route path="/register" element={<Register />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<MainLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="productList" element={<ProductList />} />
+            <Route path="addProduct" element={<ProductAdd />} />
+            <Route path="addCategory" element={<CategoryAdd />} />
+            <Route path="categoryList" element={<CategoryList />} />
+            <Route path="manageOrder" element={<ManageOrder />} />
+            <Route path="manageReturn" element={<ManageReturn />} />
+            <Route path="order" element={<Order />} />
+            <Route path="orderDetail" element={<OrderDetail />} />
+            <Route path="orderSchedule" element={<OrderSchedule />} />
+            <Route path="shiprocketLogin" element={<ShiprocketLogin />} />
+            <Route path="orderReturn" element={<OrderReturn />} />
           </Route>
-          <Route path="/register" element={<PublicRoute />}>
-            <Route path="/register" element={<Register />} />
-          </Route>
-          <Route path="/" element={<ProtectedRoute />}>
-            <Route index element={<Navigate to="/login" replace />} />
-            <Route element={<MainLayout />}>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="productList" element={<ProductList />} />
-              <Route path="addProduct" element={<ProductAdd />} />
-              <Route path="addCategory" element={<CategoryAdd />} />
-              <Route path="categoryList" element={<CategoryList />} />
-            </Route>
-          </Route>
-        </Routes>
-      </Router>
-    </ErrorBoundary>
+        </Route>
+      </Routes>
+    </Router>
   );
 };
 

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import { Space, Table } from 'antd';
+import { Link, useLocation } from 'react-router-dom';
 
 const columns = [
   {
@@ -23,8 +24,8 @@ const columns = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <Link to="/editProduct">Edit</Link>
+        <a href='/deleteProduct'>Delete</a>
       </Space>
     ),
   },
@@ -40,6 +41,12 @@ const columns = [
   }
 
 const ProductList = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Store the current route in local storage
+    localStorage.setItem("lastVisitedRoute", location.pathname);
+  }, [location]);
   return (
     <div>
         <h2 className='mb-4'>Product List</h2>

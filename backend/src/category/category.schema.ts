@@ -17,6 +17,9 @@ export class Category {
 
   @Prop({ required: true, unique: true }) // Add the slug field and ensure it's unique
   slug: string;
+
+  @Prop({ required: true })
+  image: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

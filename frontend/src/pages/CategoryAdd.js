@@ -9,6 +9,8 @@ import {
   getSubCategories,
   createSubSubCategory,
 } from "../functions/category";
+import { useLocation } from "react-router-dom";
+import ImageUpload from "../components/ImageUpload";
 
 const { Option } = Select;
 
@@ -19,11 +21,18 @@ const CategoryAdd = () => {
   const [subSubName, setsubSubName] = useState("");
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [parentId, setParentId] = useState("");
   const [subCategories, setSubCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [filteredSubCategories, setFilteredSubCategories] = useState([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Store the current route in local storage
+    localStorage.setItem("lastVisitedRoute", location.pathname);
+  }, [location]);
 
   const [categoryForm] = Form.useForm();
   const [subcategoryForm] = Form.useForm();
@@ -41,18 +50,19 @@ const CategoryAdd = () => {
   };
 
   const handleCategorySubmit = (e) => {
-    //e.preventDefault();
     setLoading(true);
-    createCategory({ name })
-      .then((response) => {
-        setLoading(false);
-        setName("");
-        toast.success(`"${response.name}" category is created`);
-      })
-      .catch((err) => {
-        setLoading(false);
-        if (err.response.status === 400) toast.error(err.response.data);
-      });
+    console.log(uploadedImageUrl);
+    // createCategory({ name, image: uploadedImageUrl }) // Include the uploaded image URL
+    //   .then((response) => {
+    //     setLoading(false);
+    //     setName("");
+    //     setUploadedImageUrl(""); // Clear the uploaded image URL
+    //     toast.success(`"${response.name}" category is created`);
+    //   })
+    //   .catch((err) => {
+    //     setLoading(false);
+    //     if (err.response.status === 400) toast.error(err.response.data);
+    //   });
   };
 
   const loadSubCategories = () => {
@@ -112,6 +122,9 @@ const CategoryAdd = () => {
         onSubmit={handleCategorySubmit}
         onFinish={handleCategorySubmit}
       >
+        <Form.Item label="Category Image">
+          <ImageUpload onUpload={setUploadedImageUrl} /> {/* Pass the callback */}
+        </Form.Item>
         <Form.Item
           label="Category Name"
           required
