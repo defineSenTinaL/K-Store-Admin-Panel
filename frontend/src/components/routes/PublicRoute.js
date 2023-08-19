@@ -21,6 +21,19 @@ const PublicRoute = () => {
     return () => clearTimeout(loadingTimeout);
   }, []);
 
+  // Clean up lastVisitedRoute when the component unmounts
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  const handleBeforeUnload = () => {
+    // Remove the lastVisitedRoute from local storage when the user leaves the page
+    localStorage.removeItem('lastVisitedRoute');
+  };
+
   if (isLoading) {
     // Show loading spinner while data is being loaded
     return (

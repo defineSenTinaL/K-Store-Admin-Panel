@@ -91,6 +91,40 @@ export class ProductService {
     }
   }
 
+  async updateProductPrice(
+    productId: string,
+    newPrice: number,
+  ): Promise<ProductDocument | null> {
+    try {
+      const updatedProduct = await this.productModel.findByIdAndUpdate(
+        productId,
+        { price: newPrice },
+        { new: true },
+      );
+      return updatedProduct;
+    } catch (error) {
+      // Handle error
+      throw new Error('Error updating product price');
+    }
+  }
+
+  async updateProductQuantity(
+    productId: string,
+    newQuantity: number,
+  ): Promise<ProductDocument | null> {
+    try {
+      const updatedProduct = await this.productModel.findByIdAndUpdate(
+        productId,
+        { quantity: newQuantity },
+        { new: true },
+      );
+      return updatedProduct;
+    } catch (error) {
+      // Handle error
+      throw new Error('Error updating product quantity');
+    }
+  }
+
   // Get Product by Category
 
   async getProductsByCategoryAndPagination(

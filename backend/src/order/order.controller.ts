@@ -37,6 +37,12 @@ export class OrderController {
     return { count };
   }
 
+  @Get('return-count')
+  async getReturnOrderCount() {
+    const count = await this.orderService.getReturnOrdersCount();
+    return { count };
+  }
+
   @Post()
   async createOrder(
     @Body() orderData: Partial<OrderDocument>,
@@ -57,7 +63,7 @@ export class OrderController {
     return pendingOrders;
   }
 
-  @Get('return-count')
+  @Get('return')
   async getReturnOrders(): Promise<OrderDocument[]> {
     const returnOrders = await this.orderService.getReturnOrders();
     return returnOrders;
@@ -150,7 +156,7 @@ export class OrderController {
     return { message: 'Return rejected successfully' };
   }
 
-  @Post('return')
+  @Post('return-update')
   async updateReturn(@Body() updateData: any) {
     try {
       await this.orderService.updateReturn(updateData);

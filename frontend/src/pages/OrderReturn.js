@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Card, Button } from "antd";
+import { Card, Button, Spin, Result } from "antd";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,11 +13,18 @@ const OrderReturn = () => {
   const navigate = useNavigate();
   const orderDetail = location.state; // Access the passed data
   const authToken = useSelector((state) => state.shiprocket.token);
+  const [isLoading, setIsLoading] = useState(false);
   const [isReturnAccepted, setIsReturnAccepted] = useState(false); // Initialize the state variable
+  const [isReturnRejected, setIsReturnRejected] = useState(false); // Initialize the state variable
+  const [isReturnSchedule, setIsReturnSchedule] = useState(false);
+  const [acceptReturnResultVisible, setAcceptReturnResultVisible] = useState(true); // State to track whether success message is visible
+  const [rejectReturnResultVisible, setRejectReturnResultVisible] = useState(true); // State to track whether success message is visible
+  const [returnScheduleResultVisible, setReturnScheduleResultVisible] = useState(true); // State to track whether success message is visible
   const [shipmentId, setshipmentId] = useState(""); // Initialize the state variable
 
-  //Handle Accept Order
-  const handleAcceptOrder = async () => {
+  //Handle Accept Return
+  const handleAcceptReturn = async () => {
+    setIsLoading(true);
     try {
       returnAccepted(orderDetail._id)
         .then((response) => {
@@ -29,16 +36,19 @@ const OrderReturn = () => {
         });
       // Show success toast message
       setIsReturnAccepted(true);
+      setIsLoading(false);
       toast.success("Order created successfully!");
       //console.log("Order updated:");
     } catch (error) {
+      setIsLoading(false);
       toast.error("An error occurred while handling the order.");
       console.error("Error handling create order:", error);
     }
   };
 
-  // Handle Reject Order
-  const handleRejectOrder = async () => {
+  // Handle Reject Return
+  const handleRejectReturn = async () => {
+    setIsLoading(true);
     try {
       returnRejected(orderDetail._id)
         .then((response) => {
@@ -49,9 +59,12 @@ const OrderReturn = () => {
           if (err.response.status === 400) toast.error(err.response.data);
         });
       // Show success toast message
+      setIsLoading(false);
+      setIsReturnRejected(true);
       toast.success("Order created successfully!");
       console.log("Order updated:");
     } catch (error) {
+      setIsLoading(false);
       toast.error("An error occurred while handling the order.");
       console.error("Error handling create order:", error);
     }
@@ -59,6 +72,7 @@ const OrderReturn = () => {
 
   //Handle PickUp Order
   const handleReturnSchedule = async () => {
+    setIsLoading(true);
     try {
       const payload = {
         order_id: orderDetail.returnId,
@@ -162,15 +176,79 @@ const OrderReturn = () => {
           shipment_id,
         }
       );
-      // Show success toast message
+      setIsLoading(false);
+      setIsReturnSchedule(true);
+      setshipmentId(shipment_id);
       toast.success("Order created successfully!");
-      console.log("Order updated:", updateOrder.data);
-      navigate(`/orderDetail/${orderDetail._id}`);
+      //console.log("Order updated:", updateOrder.data);
+      //navigate(`/orderDetail/${orderDetail._id}`);
     } catch (error) {
+      setIsLoading(false);
       toast.error("An error occurred while scheduling the pick up.");
       console.error("Error handling pickup order:", error);
     }
   };
+
+  const handleAcceptReturnResultClick = () => {
+    setAcceptReturnResultVisible(false); // Hide the success message when clicked
+  };
+  const handleRejectReturnResultClick = () => {
+    setRejectReturnResultVisible(false); // Hide the success message when clicked
+  };
+  const handleReturnScheduleResultClick = () => {
+    setReturnScheduleResultVisible(false); // Hide the success message when clicked
+  };
+
+  if (isLoading) {
+    // Show loading spinner while data is being fetched
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  if (isReturnAccepted && acceptReturnResultVisible) {
+    // Show success result message for order confirmation
+    return (
+      <div onClick={handleAcceptReturnResultClick}>
+        <Result
+          status="success"
+          title="Return Accepted!"
+        />
+      </div>
+    );
+  }
+
+  if (isReturnRejected && rejectReturnResultVisible) {
+    // Show success result message for order confirmation
+    return (
+      <div onClick={handleRejectReturnResultClick}>
+        <Result
+          status="success"
+          title="Return Rejected!"
+        />
+      </div>
+    );
+  }
+
+  if (isReturnSchedule && returnScheduleResultVisible) {
+    // Show success result message for order confirmation
+    return (
+      <div onClick={handleReturnScheduleResultClick}>
+        <Result
+          status="success"
+          title="Return Schedule!"
+          subTitle={`Shipment ID: ${shipmentId}`}
+          extra={[
+            <Button type="primary" key="back" onClick={() => navigate(`/orderDetail/${orderDetail._id}`)}>
+              View Order Detail
+            </Button>,
+          ]}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -186,7 +264,7 @@ const OrderReturn = () => {
         <div style={{ display: "flex", alignItems: "center" }}>
           <Button
             type="primary"
-            onClick={handleAcceptOrder}
+            onClick={handleAcceptReturn}
             disabled={isReturnAccepted}
             style={{ marginRight: "8px" }} // Add margin to the right
           >
@@ -194,7 +272,7 @@ const OrderReturn = () => {
           </Button>
           <Button
             type="primary"
-            onClick={handleRejectOrder}
+            onClick={handleRejectReturn}
             disabled={isReturnAccepted}
             style={{ marginRight: "8px" }} // Add margin to the right
           >

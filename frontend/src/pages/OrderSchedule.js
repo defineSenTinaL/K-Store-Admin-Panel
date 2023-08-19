@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Card, Button } from "antd";
+import { Card, Button, Spin, Result } from "antd";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,13 +10,19 @@ import "react-toastify/dist/ReactToastify.css";
 const OrderSchedule = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const orderDetail = location.state; // Access the passed data
   const authToken = useSelector((state) => state.shiprocket.token);
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false); // Initialize the state variable
+  const [isConfirmOrder, setConfirmOrder] = useState(false); // Initialize the state variable
+  const [isPickupOrder, setPickupOrder] = useState(false); // Initialize the state variable
   const [shipmentId, setshipmentId] = useState(""); // Initialize the state variable
+  const [confirmOrderResultVisible, setConfirmOrderResultVisible] = useState(true); // State to track whether success message is visible
+  const [pickupOrderResultVisible, setPickupOrderResultVisible] = useState(true); // State to track whether success message is visible
+
 
   //Handle Confirm Order
   const handleConfirmOrder = async () => {
+    setIsLoading(true);
     try {
       const payload = {
         order_id: orderDetail.orderId,
@@ -110,18 +116,21 @@ const OrderSchedule = () => {
       );
 
       setshipmentId(shipment_id);
-      setIsOrderConfirmed(true);
+      setConfirmOrder(true);
       // Show success toast message
+      setIsLoading(false);
       toast.success("Order created successfully!");
       console.log("Order updated:", confirmOrder.data);
     } catch (error) {
       toast.error("An error occurred while handling the order.");
       console.error("Error handling create order:", error);
+      setIsLoading(false);
     }
   };
 
   //Handle PickUp Order
   const handlePickupOrder = async () => {
+    setIsLoading(true);
     try {
       const payload = {
         shipment_id: shipmentId,
@@ -203,12 +212,62 @@ const OrderSchedule = () => {
       // Show success toast message
       toast.success("Pick Up Schedule successfully!");
       console.log("Order updated with pickup response:", updateOrder.data);
-      navigate(`/orderDetail/${orderDetail._id}`);
+      setIsLoading(false);
+      setPickupOrder(true);
+      //navigate(`/orderDetail/${orderDetail._id}`);
     } catch (error) {
       toast.error("An error occurred while scheduling the pick up.");
       console.error("Error handling pickup order:", error);
+      setIsLoading(false);
     }
   };
+
+  const handleConfirmOrderResultClick = () => {
+    setConfirmOrderResultVisible(false); // Hide the success message when clicked
+  };
+
+  const handlePickUpOrderResultClick = () => {
+    setPickupOrderResultVisible(false);
+  }
+
+  if (isLoading) {
+    // Show loading spinner while data is being fetched
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  if (isConfirmOrder && confirmOrderResultVisible) {
+    // Show success result message for order confirmation
+    return (
+      <div onClick={handleConfirmOrderResultClick}>
+        <Result
+          status="success"
+          title="Order created successfully!"
+        />
+      </div>
+    );
+  }
+
+  if (isPickupOrder && pickupOrderResultVisible) {
+    // Show success result message for pickup scheduling
+    return (
+      <div onClick={handlePickUpOrderResultClick}>
+      <Result
+        status="success"
+        title="Pick Up Scheduled Successfully!"
+        subTitle={`Shipment ID: ${shipmentId}`}
+        extra={[
+          <Button type="primary" key="back" onClick={() => navigate(`/orderDetail/${orderDetail._id}`)}>
+            View Order Detail
+          </Button>,
+        ]}
+      />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -225,7 +284,7 @@ const OrderSchedule = () => {
           <Button
             type="primary"
             onClick={handleConfirmOrder}
-            disabled={isOrderConfirmed}
+            disabled={isConfirmOrder}
           >
             Confirm Order
           </Button>

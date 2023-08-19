@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select, Spin } from "antd";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -19,7 +19,7 @@ const CategoryAdd = () => {
   const [name, setName] = useState("");
   const [subName, setsubName] = useState("");
   const [subSubName, setsubSubName] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [parentId, setParentId] = useState("");
@@ -50,17 +50,17 @@ const CategoryAdd = () => {
   };
 
   const handleCategorySubmit = (e) => {
-    setLoading(true);
+    setIsLoading(true);
     console.log(uploadedImageUrl);
     // createCategory({ name, image: uploadedImageUrl }) // Include the uploaded image URL
     //   .then((response) => {
-    //     setLoading(false);
+    //     setIsLoading(false);
     //     setName("");
     //     setUploadedImageUrl(""); // Clear the uploaded image URL
     //     toast.success(`"${response.name}" category is created`);
     //   })
     //   .catch((err) => {
-    //     setLoading(false);
+    //     setIsLoading(false);
     //     if (err.response.status === 400) toast.error(err.response.data);
     //   });
   };
@@ -73,32 +73,32 @@ const CategoryAdd = () => {
 
   const handleSubcategorySubmit = (e) => {
     //e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     createSubCategory({ name: subName, parentId })
       .then((response) => {
-        setLoading(false);
+        setIsLoading(false);
         setName("");
         setParentId("");
         toast.success(`"${response.name}" subcategory is created`);
       })
       .catch((err) => {
-        setLoading(false);
+        setIsLoading(false);
         if (err.response.status === 400) toast.error(err.response.data);
       });
   };
 
   const handleSubSubcategorySubmit = (e) => {
     //e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     createSubSubCategory({ name: subSubName, parentId: selectedSubCategory })
       .then((response) => {
-        setLoading(false);
+        setIsLoading(false);
         setName("");
         setSelectedSubCategory("");
         toast.success(`"${response.name}" subsubcategory is created`);
       })
       .catch((err) => {
-        setLoading(false);
+        setIsLoading(false);
         if (err.response.status === 400) toast.error(err.response.data);
       });
   };
@@ -111,6 +111,15 @@ const CategoryAdd = () => {
     );
     setFilteredSubCategories(subCategoriesFiltered);
   };
+
+  if (isLoading) {
+    // Show loading spinner while data is being fetched
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <>

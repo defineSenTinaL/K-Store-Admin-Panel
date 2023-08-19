@@ -27,6 +27,7 @@ import ShiprocketLogin from "./pages/auth/ShiprocketLogin";
 import { setToken } from "./features/shiprocket/shiprocketSlice";
 import OrderReturn from "./pages/OrderReturn";
 import { Spin } from "antd";
+import ProductDelete from "./pages/ProductDelete";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -93,6 +94,7 @@ const App = () => {
             <Route path="profile" element={<Profile />} />
             <Route path="productList" element={<ProductList />} />
             <Route path="addProduct" element={<ProductAdd />} />
+            <Route path="deleteProduct" element={<ProductDelete />} />
             <Route path="addCategory" element={<CategoryAdd />} />
             <Route path="categoryList" element={<CategoryList />} />
             <Route path="manageOrder" element={<ManageOrder />} />

@@ -21,6 +21,19 @@ const ProtectedRoute = () => {
     return () => clearTimeout(loadingTimeout);
   }, []);
 
+  // Clean up lastVisitedRoute when the component unmounts
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  const handleBeforeUnload = () => {
+    // Remove the lastVisitedRoute from local storage when the user leaves the page
+    localStorage.removeItem('lastVisitedRoute');
+  };
+
   if (isLoading) {
     // Show loading spinner while data is being loaded
     return (
@@ -34,25 +47,3 @@ const ProtectedRoute = () => {
 };
 
 export default ProtectedRoute;
-
-
-
-
-
-
-
-// import React from "react";
-// import { Route, Link } from "react-router-dom";
-// import { useSelector } from "react-redux";
-
-// const SellerRoute = ({ children, ...rest }) => {
-//   const { seller } = useSelector((state) => ({ ...state }));
-
-//   return seller && seller.token ? (
-//     <Route {...rest} render={() => children} />
-//   ) : (
-//     <h1 className="text-dagner"> LOADING.....</h1>
-//   );
-// };
-
-// export default SellerRoute;

@@ -1,7 +1,9 @@
-import React from "react";
-import { Table } from "antd";
+import React, {useState} from "react";
+import { Table, Spin } from "antd";
 
 const CategoryList = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const subSubCategoryColumns = [
     {
       title: "Sub Sub Category Name",
@@ -53,6 +55,15 @@ const CategoryList = () => {
         date: "2023-02-01",
       },
     ];
+
+    if (isLoading) {
+      // Show loading spinner while data is being fetched
+      return (
+        <div className="center-content">
+          <Spin size="large" />
+        </div>
+      );
+    }
 
     return (
       <Table

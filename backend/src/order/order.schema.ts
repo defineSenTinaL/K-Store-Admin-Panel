@@ -154,6 +154,9 @@ export class Order {
   @Prop()
   returnReason: string;
 
+  @Prop()
+  returnRejectReason: string;
+
   @Prop({ default: false })
   returnCancelled: boolean;
 

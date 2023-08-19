@@ -10,6 +10,8 @@ import {
   Param,
   Put,
   Query,
+  Patch,
+  NotFoundException,
 } from '@nestjs/common';
 import { ProductExceptionFilter } from 'src/filters/product-exception-filter';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -41,28 +43,60 @@ export class ProductController {
   }
 
   @Get(':id')
-  async getProductById(@Param('id') id: string) {
-    return this.productService.getProductById(id);
+  async getProductById(@Param('id') _id: string) {
+    return this.productService.getProductById(_id);
   }
 
   @Put(':id')
   async updateProduct(
-    @Param('id') id: string,
+    @Param('id') _id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productService.updateProduct(id, updateProductDto);
+    return this.productService.updateProduct(_id, updateProductDto);
   }
 
   @Delete(':id')
-  async deleteProduct(@Param('id') id: string) {
-    return this.productService.deleteProduct(id);
+  async deleteProduct(@Param('id') _id: string) {
+    return this.productService.deleteProduct(_id);
+  }
+
+  @Patch(':id/update-price')
+  async updateProductPrice(
+    @Param('id') _id: string,
+    @Body('price') newPrice: number,
+  ) {
+    const updatedProduct = await this.productService.updateProductPrice(
+      _id,
+      newPrice,
+    );
+    if (updatedProduct) {
+      return { message: 'Successfully updated product price' };
+    } else {
+      throw new NotFoundException('Product not found');
+    }
+  }
+
+  @Patch(':id/update-quantity')
+  async updateProductQuantity(
+    @Param('id') productId: string,
+    @Body('quantity') newQuantity: number,
+  ) {
+    const updatedProduct = await this.productService.updateProductQuantity(
+      productId,
+      newQuantity,
+    );
+    if (updatedProduct) {
+      return { message: 'Successfully updated product quantity' };
+    } else {
+      throw new NotFoundException('Product not found');
+    }
   }
 
   // get product by category
 
   @Get('/category/:categoryId')
   async getProductsByCategory(
-    @Param('category') category: string,
+    @Param('categoryId') category: string,
     @Query() paginationDto: PaginationDto,
   ) {
     return this.productService.getProductsByCategoryAndPagination(
@@ -71,9 +105,9 @@ export class ProductController {
     );
   }
 
-  @Get('/subcategory/:subcategoryId')
+  @Get('/sub-category/:subCategoryId')
   async getProductsBySubcategory(
-    @Param('subCategory') subCategory: string,
+    @Param('subCategoryId') subCategory: string,
     @Query() paginationDto: PaginationDto,
   ) {
     return this.productService.getProductsBySubCategoryAndPagination(
@@ -82,9 +116,9 @@ export class ProductController {
     );
   }
 
-  @Get('/subsubcategory/:subsubcategoryId')
+  @Get('/sub-sub-category/:subSubCategoryId')
   async getProductsBySubsubcategory(
-    @Param('subSubCategory') subSubCategory: string,
+    @Param('subSubCategoryId') subSubCategory: string,
     @Query() paginationDto: PaginationDto,
   ) {
     return this.productService.getProductsBySubSubCategoryAndPagination(

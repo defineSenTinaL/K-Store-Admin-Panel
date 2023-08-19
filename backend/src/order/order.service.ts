@@ -185,6 +185,13 @@ export class OrderService {
     return count;
   }
 
+  async getReturnOrdersCount(): Promise<number> {
+    const returnOrderCount = await this.orderModel
+      .countDocuments({ isReturnRequested: true })
+      .exec();
+    return returnOrderCount;
+  }
+
   async getOrderById(orderId: string): Promise<OrderDocument | null> {
     return this.orderModel.findById(orderId).exec();
   }

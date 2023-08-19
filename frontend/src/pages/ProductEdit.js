@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Space, Tabs, Form } from "antd";
+import { Button, Space, Tabs, Form, Spin } from "antd";
 import BasicDetails from "../components/products/BasicDetails";
 import FullDetails from "../components/products/FullDetails";
 import Description from "../components/products/Description";
@@ -13,7 +13,7 @@ import { getProductById } from "../functions/product";
 
 const EditProduct = ({ productId }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [basicDetails, setBasicDetails] = useState({});
   const [fullDetails, setFullDetails] = useState({});
   const [images, setImages] = useState([]);
@@ -84,15 +84,20 @@ const EditProduct = ({ productId }) => {
         setVariance({
           variance: variance,
         });
+        setIsLoading(false); // Data fetching is complete
+
       })
+      
       .catch((error) => {
         // Handle error if needed
         console.error("Error fetching product data:", error);
+        setIsLoading(false); // Data fetching is complete
+
       });
   }, []);
 
   const handleProductSubmit = () => {
-    setLoading(true);
+    setIsLoading(true);
     // Construct the product data to update
     const productDataToUpdate = {
       // Basic Details
@@ -152,12 +157,12 @@ const EditProduct = ({ productId }) => {
     console.log(productDataToUpdate);
     // updateProduct(productId, productDataToUpdate) // Assuming productData has an ID property to identify the product
     //   .then((response) => {
-    //     setLoading(false);
+    //     setIsLoading(false); // Data fetching is complete
     //     toast.success(`"${response.name}" Product is updated`);
     //     // You can perform additional actions after successful update if needed
     //   })
     //   .catch((err) => {
-    //     setLoading(false);
+    //      setIsLoading(false); // Data fetching is complete
     //     if (err.response.status === 400) toast.error(err.response.data);
     //     // Handle error if needed
     //   });
@@ -200,6 +205,15 @@ const EditProduct = ({ productId }) => {
       children: <Variance data={variance} onSubmit={setVariance} />,
     },
   ];
+
+  if (isLoading) {
+    // Show loading spinner while data is being fetched
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <>

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Card, Col, Row, Statistic, Space, Table, Pagination } from "antd";
+import { Card, Col, Row, Statistic, Space, Table, Pagination, Spin } from "antd";
 import { Link } from "react-router-dom";
 
 const Order = () => {
   // const [recentOrders, setRecentOrders] = useState([]);
   // const [currentPage, setCurrentPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+
   // const pageSize = 10; // Number of orders to show per page
 
   // const columns = [
@@ -45,6 +47,16 @@ const Order = () => {
   //       : "N/A",
   //   status: order.status,
   // }));
+
+  if (isLoading) {
+    // Show loading spinner while data is being fetched
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
+  
   return (
     <div>
       <Space direction="vertical" size="middle" style={{ display: "flex" }}>

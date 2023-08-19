@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Space, Tabs, Form } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Space, Tabs, Form, Spin } from "antd";
 import BasicDetails from "../components/products/BasicDetails";
 import FullDetails from "../components/products/FullDetails";
 import Description from "../components/products/Description";
@@ -9,10 +9,13 @@ import { toast } from "react-toastify";
 import { createProduct } from "../functions/product";
 import Variance from "../components/products/Variance";
 import ImageUpload from "../components/products/Images";
+import { useLocation } from 'react-router-dom';
+
+
 
 const ProductAdd = () => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [basicDetails, setBasicDetails] = useState({});
   const [fullDetails, setFullDetails] = useState({});
   const [images, setImages] = useState([]);
@@ -20,6 +23,13 @@ const ProductAdd = () => {
   const [keyword, setKeyword] = useState({});
   const [moreDetails, setMoreDetails] = useState({});
   const [variance, setVariance] = useState({});
+
+  const location = useLocation();
+
+  useEffect(() => {
+    // Store the current route in local storage
+    localStorage.setItem("lastVisitedRoute", location.pathname);
+  }, [location]);
 
   const items = [
     {
@@ -60,7 +70,7 @@ const ProductAdd = () => {
   ];
 
   const handleProductSubmit = () => {
-    setLoading(true);
+    setIsLoading(true);
     const productData = {
       // Basic Details
       category: basicDetails.selectedCategory,
@@ -119,15 +129,24 @@ const ProductAdd = () => {
     console.log(productData);
     createProduct(productData)
       .then((response) => {
-        setLoading(false);
+        setIsLoading(false);
         toast.success(`"${response.name}" Product is created`);
         window.location.reload();
       })
       .catch((err) => {
-        setLoading(false);
+        setIsLoading(false);
         if (err.response.status === 400) toast.error(err.response.data);
       });
   };
+
+  if (isLoading) {
+    // Show loading spinner while data is being fetched
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <>

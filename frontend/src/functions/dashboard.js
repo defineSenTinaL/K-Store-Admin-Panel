@@ -34,3 +34,13 @@ export const getTodaySales = async () => {
       console.error(error);
     }
   };
+
+  export const getReturnOrderCount = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API}/order/return-count`);
+      console.log(response.data); // The response data from the backend
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };

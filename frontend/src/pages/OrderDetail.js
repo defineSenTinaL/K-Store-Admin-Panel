@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Col, Row, Space, List, Steps } from "antd";
+import { Card, Col, Row, Space, List, Steps, Spin } from "antd";
 import { useParams } from "react-router-dom";
 import { getOrderById } from "../functions/order";
 
@@ -8,6 +8,8 @@ const OrderDetail = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [trackingData, setTrackingData] = useState(null); // Data from Shiprocket API
   const [order, setOrder] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
 
   const { _id } = useParams();
 
@@ -17,9 +19,11 @@ const OrderDetail = () => {
       .then((data) => {
         console.log(data);
         setOrder(data); // Update the state with the fetched data
+        setIsLoading(false); // Data fetching is complete
       })
       .catch((error) => {
         console.error(error);
+        setIsLoading(false); // Data fetching is complete
       });
   }, []);
 
@@ -31,8 +35,10 @@ const OrderDetail = () => {
   //       const response = await fetch('YOUR_SHIPROCKET_API_ENDPOINT');
   //       const data = await response.json();
   //       setTrackingData(data.tracking_data);
+  //       setIsLoading(false); // Data fetching is complete
   //     } catch (error) {
   //       console.error('Error fetching tracking data:', error);
+  //       setIsLoading(false); // Data fetching is complete
   //     }
   //   };
 
@@ -89,6 +95,15 @@ const OrderDetail = () => {
     // Calculate the time left logic here
     return "00:00:08"; // Replace this with your actual logic
   };
+
+  if (isLoading) {
+    // Show loading spinner while data is being fetched
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <>
