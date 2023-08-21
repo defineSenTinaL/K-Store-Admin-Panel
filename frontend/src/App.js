@@ -28,6 +28,7 @@ import { setToken } from "./features/shiprocket/shiprocketSlice";
 import OrderReturn from "./pages/OrderReturn";
 import { Spin } from "antd";
 import ProductDelete from "./pages/ProductDelete";
+import Brand from "./pages/Brand";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -44,10 +45,8 @@ const App = () => {
           .then((res) => {
             dispatch(
               setLoggedInSeller({
-                name: res.name,
-                email: res.email,
+                ...res,
                 token: idTokenResult.token,
-                id: res.id,
               })
             );
           })
@@ -94,6 +93,7 @@ const App = () => {
             <Route path="profile" element={<Profile />} />
             <Route path="productList" element={<ProductList />} />
             <Route path="addProduct" element={<ProductAdd />} />
+            <Route path="brandList" element={<Brand />} />
             <Route path="deleteProduct" element={<ProductDelete />} />
             <Route path="addCategory" element={<CategoryAdd />} />
             <Route path="categoryList" element={<CategoryList />} />

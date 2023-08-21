@@ -1,41 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table, Spin, Image, InputNumber, Button } from "antd";
-import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  Space,
+  Table,
+  Spin,
+  Image,
+  InputNumber,
+  Button,
+  Pagination,
+} from "antd";
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import { updateProductPrice, updateProductQuantity } from "../functions/product";
+import {
+  updateProductPrice,
+  updateProductQuantity,
+} from "../functions/product";
+import { getProducts } from "../functions/product";
 
 const ProductList = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10; // Number of orders to show per page
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API}/product/64c970fc8610c3f33a82c0f1`)
-      .then((response) => {
-        console.log(response);
-        const product = response.data; // Assuming the response is an object containing the product data
-        const modifiedData = [
-          {
-            key: product._id,
-            title: product.title,
-            sku: product.sku,
-            price: product.price,
-            quantity: product.quantity,
-            image: product.image[0].url,
-          },
-        ];
-        setData(modifiedData);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-      });
+  // useEffect(() => {
+  //   setIsLoading(true);
 
-    localStorage.setItem("lastVisitedRoute", location.pathname);
-  }, [location]);
+  //   // Fetch products with pagination
+  //   getProducts(currentPage, pageSize)
+  //     .then((response) => {
+  //       console.log(response);
+  //       // const productsArray = Object.values(response.products);
+
+  //       // const modifiedData = productsArray.map((product) => ({
+  //       //   key: product._id,
+  //       //   title: product.title,
+  //       //   sku: product.sku,
+  //       //   price: product.price,
+  //       //   quantity: product.quantity,
+  //       //   image: product.image[0]?.url || "", // You can add error handling here
+  //       // }));
+  //       setData(response);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //       setIsLoading(false);
+  //     });
+
+  //   localStorage.setItem("lastVisitedRoute", location.pathname);
+  // }, [location, currentPage, pageSize]);
 
   const handleConfirmPrice = (productId, newPrice) => {
     updateProductPrice(productId, newPrice)
@@ -108,12 +123,13 @@ const ProductList = () => {
       ),
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: "Action",
+      key: "action",
       render: (_, record) => (
         <Space size="middle">
           <Link to="/editProduct">Edit</Link>
-          <Link to={`/deleteProduct?id=${record.key}`}>Delete</Link> {/* Pass product ID as query parameter */}
+          <Link to={`/deleteProduct?id=${record.key}`}>Delete</Link>{" "}
+          {/* Pass product ID as query parameter */}
         </Space>
       ),
     },
@@ -131,13 +147,15 @@ const ProductList = () => {
     <div>
       <h2 className="mb-4">Product List</h2>
       <div>
-        <Table
-          columns={columns}
-          pagination={{
-            position: ["none", "bottomCenter"],
-          }}
-          dataSource={data}
-        />
+        <Table columns={columns} pagination={false} dataSource={data} />
+        <div className="d-flex justify-content-center mt-4">
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={10} // Total number of orders (you should update this based on the total count from the backend)
+            onChange={(page) => setCurrentPage(page)} // Update the current page when pagination is changed
+          />
+        </div>
       </div>
     </div>
   );
@@ -170,26 +188,17 @@ const EditableField = ({ value, onSave }) => {
       {editing ? (
         <div className="d-flex align-items-center">
           <InputNumber value={newValue} onChange={handleValueChange} />
-          <Button
-            className="btn btn-primary btn-sm mx-2"
-            onClick={saveChanges}
-          >
+          <Button className="btn btn-primary btn-sm mx-2" onClick={saveChanges}>
             <CheckOutlined />
           </Button>
-          <Button
-            className="btn btn-link btn-sm"
-            onClick={cancelEditing}
-          >
+          <Button className="btn btn-link btn-sm" onClick={cancelEditing}>
             <CloseOutlined />
           </Button>
         </div>
       ) : (
         <div className="d-flex align-items-center">
           {value}
-          <Button
-            className="btn btn-link btn-sm ml-2"
-            onClick={startEditing}
-          >
+          <Button className="btn btn-link btn-sm ml-2" onClick={startEditing}>
             <EditOutlined />
           </Button>
         </div>

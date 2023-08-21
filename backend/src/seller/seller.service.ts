@@ -10,11 +10,9 @@ export class SellerService {
     @InjectModel(Seller.name)
     private readonly sellerModel: Model<SellerDocument>,
   ) {}
-  async createSeller(
-    createSellerDto: CreateSellerDto,
-  ): Promise<SellerDocument> {
+  async createSeller(sellerData: Partial<Seller>): Promise<SellerDocument> {
     // Generate the slug from the category name using slugify
-    const newSeller = new this.sellerModel(createSellerDto);
+    const newSeller = new this.sellerModel(sellerData);
     return newSeller.save();
   }
 

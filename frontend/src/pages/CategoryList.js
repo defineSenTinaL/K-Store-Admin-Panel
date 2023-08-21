@@ -1,8 +1,36 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Spin } from "antd";
+import {
+  getCategories,
+  getSubCategories,
+  getSubSubCategories,
+} from "../functions/category";
 
 const CategoryList = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [subSubCategories, setSubSubCategories] = useState([]);
+
+  // useEffect(() => {
+  //   loadData();
+  // }, []);
+
+  const loadData = async () => {
+    try {
+      const categoryData = await getCategories();
+      const subCategoryData = await getSubCategories();
+      const subSubCategoryData = await getSubSubCategories();
+      // console.log(subCategories);
+      // console.log(subSubCategories);
+      setCategories(categoryData);
+      setSubCategories(subCategoryData);
+      setSubSubCategories(subSubCategoryData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
 
   const subSubCategoryColumns = [
     {
@@ -41,23 +69,15 @@ const CategoryList = () => {
   ];
 
   const expandedRowRender = (record) => {
-    const subCategoryData = [
-      {
-        key: "1",
-        sub_category_name: "Sub Category 1",
-        sub_category_id: "SC1",
-        date: "2023-01-01",
-      },
-      {
-        key: "2",
-        sub_category_name: "Sub Category 2",
-        sub_category_id: "SC2",
-        date: "2023-02-01",
-      },
-    ];
+    //console.log(record);
+    const categoryId = record.key; // Use the key of the current category record
+    const subCategoryData = subCategories.filter(
+      (subCategory) => subCategory.parentId === categoryId
+    );
+
+    console.log("Sub Category Data:", subCategoryData);
 
     if (isLoading) {
-      // Show loading spinner while data is being fetched
       return (
         <div className="center-content">
           <Spin size="large" />
@@ -68,28 +88,28 @@ const CategoryList = () => {
     return (
       <Table
         columns={subCategoryColumns}
-        dataSource={subCategoryData}
+        dataSource={subCategoryData.map((subCategory) => ({
+          key: subCategory._id,
+          sub_category_name: subCategory.name,
+          sub_category_id: subCategory._id, // Change to _id
+          date: subCategory.createdAt,
+        }))}
         expandable={{
           expandedRowRender: (subRecord) => {
-            const subSubCategoryData = [
-              {
-                key: "1",
-                sub_sub_category_name: "Sub Sub Category 1",
-                sub_sub_category_id: "SSC1",
-                date: "2023-03-01",
-              },
-              {
-                key: "2",
-                sub_sub_category_name: "Sub Sub Category 2",
-                sub_sub_category_id: "SSC2",
-                date: "2023-04-01",
-              },
-            ];
+            const subCategoryId = subRecord.key; // Change to _id
+            const subSubCategoryData = subSubCategories.filter(
+              (subSubCategory) => subSubCategory.parentId === subCategoryId
+            );
 
             return (
               <Table
                 columns={subSubCategoryColumns}
-                dataSource={subSubCategoryData}
+                dataSource={subSubCategoryData.map((subSubCategory) => ({
+                  key: subSubCategory._id,
+                  sub_sub_category_name: subSubCategory.name,
+                  sub_sub_category_id: subSubCategory._id, // Change to _id
+                  date: subSubCategory.createdAt,
+                }))}
                 pagination={false}
               />
             );
@@ -118,20 +138,13 @@ const CategoryList = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      category_name: "Category 1",
-      category_id: "C1",
-      date: "2023-01-01",
-    },
-    {
-      key: "2",
-      category_name: "Category 2",
-      category_id: "C2",
-      date: "2023-02-01",
-    },
-  ];
+  if (isLoading) {
+    return (
+      <div className="center-content">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <Table
@@ -139,7 +152,12 @@ const CategoryList = () => {
       expandable={{
         expandedRowRender,
       }}
-      dataSource={data}
+      dataSource={categories.map((category) => ({
+        key: category._id,
+        category_name: category.name,
+        category_id: category._id, // Change to _id
+        date: category.createdAt,
+      }))}
     />
   );
 };

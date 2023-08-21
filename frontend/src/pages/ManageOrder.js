@@ -7,19 +7,19 @@ const ManageOrder = () => {
   const [order, setOrder] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Fetch today sales when the component mounts
-    getPendingOrder()
-      .then((data) => {
-        console.log(data);
-        setOrder(data); // Update the state with the fetched data
-        setIsLoading(false); // Data fetching is complete
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsLoading(false); // Data fetching is complete
-      });
-  }, []);
+  // useEffect(() => {
+  //   // Fetch today sales when the component mounts
+  //   getPendingOrder()
+  //     .then((data) => {
+  //       console.log(data);
+  //       setOrder(data); // Update the state with the fetched data
+  //       setIsLoading(false); // Data fetching is complete
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //       setIsLoading(false); // Data fetching is complete
+  //     });
+  // }, []);
 
   if (isLoading) {
     // Show loading spinner while data is being fetched

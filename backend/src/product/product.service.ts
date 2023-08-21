@@ -35,6 +35,47 @@ export class ProductService {
     }
   }
 
+  async getAllProducts(
+    paginationDto: PaginationDto,
+  ): Promise<ProductDocument[] | null> {
+    const { page, limit } = paginationDto;
+    const skip = (page - 1) * limit;
+    try {
+      return await this.productModel
+        .find()
+        .sort({ quantity: 1 }) // Sort by low quantity
+        .skip(skip)
+        .limit(limit)
+        .exec();
+    } catch (error) {
+      const errorMessage = `Error getting products by low quantity and pagination (Service): ${error.message}`;
+      console.log(errorMessage);
+      throw new Error(errorMessage);
+    }
+  }
+
+  async getAllBrands(paginationDto: PaginationDto): Promise<string[] | null> {
+    const { page, limit } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    try {
+      const distinctBrands = await this.productModel
+        .aggregate([
+          { $group: { _id: '$brand' } }, // Group by brand field
+          { $skip: skip }, // Skip documents based on pagination
+          { $limit: 10 }, // Limit documents per page
+        ])
+        .exec();
+
+      const brandNames = distinctBrands.map((result) => result._id);
+      return brandNames;
+    } catch (error) {
+      const errorMessage = `Error getting brands with pagination (Service): ${error.message}`;
+      console.log(errorMessage);
+      throw new Error(errorMessage);
+    }
+  }
+
   // Get Product By ID
 
   async getProductById(id: string): Promise<ProductDocument | null> {

@@ -12,6 +12,7 @@ import {
   Query,
   Patch,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ProductExceptionFilter } from 'src/filters/product-exception-filter';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -40,6 +41,18 @@ export class ProductController {
       //this.loggingService.log('error', errorMessage);
       throw new Error(error.message);
     }
+  }
+
+  @Get('brand')
+  async getAllBrands(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<string[] | null> {
+    return this.productService.getAllBrands(paginationDto);
+  }
+
+  @Get()
+  async getAllProducts(@Query() paginationDto: PaginationDto) {
+    return this.productService.getAllProducts(paginationDto);
   }
 
   @Get(':id')

@@ -11,6 +11,7 @@ import { SellerService } from './seller.service';
 import { CreateSellerDto } from './dto/create-seller.dto';
 
 import { SellerExceptionFilter } from 'src/filters/seller-exception-filter';
+import { SellerDocument } from './seller.schema';
 
 @Controller('seller')
 @UseFilters(SellerExceptionFilter)
@@ -20,14 +21,14 @@ export class SellerController {
   @Post('/create-seller')
   async create(
     @Req() req: any,
-    @Body() createSellerDto: CreateSellerDto,
+    @Body() sellerData: Partial<SellerDocument>,
     @Res() res: any,
   ) {
     try {
-      const { email } = req.seller;
-      const newSellerDto = { ...createSellerDto, email };
-      console.log(newSellerDto);
-      const newSeller = await this.sellerService.createSeller(newSellerDto);
+      //const { email } = req.seller;
+      //const newSellerDto = { ...createSellerDto, email };
+      //console.log(newSellerDto);
+      const newSeller = await this.sellerService.createSeller(sellerData);
       //console.log(newSeller);
       return res.json('Seller created in Database');
     } catch (error) {
@@ -40,7 +41,7 @@ export class SellerController {
   @Get('/current-seller')
   async getCurrentUser(@Req() req: any, @Res() res: any) {
     try {
-      console.log(req.seller);
+      //const { email } = data;
       const { email } = req.seller;
       const seller = await this.sellerService.getCurrentSeller(email);
       // const logMessage = `Current Seller Logged in (controller): ${seller}`;

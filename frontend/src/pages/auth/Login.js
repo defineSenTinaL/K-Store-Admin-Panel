@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Input, Button, Checkbox, Spin } from "antd"; // Import Spin
+import { Spin } from "antd"; // Import Spin
 import background from "./images/background.png";
-import loginImg from "./images/login.png";
 import { UserOutlined, KeyOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
@@ -13,7 +12,17 @@ import { setLoggedInSeller } from "../../features/seller/sellerSlice";
 
 import { currentSeller } from "../../functions/auth";
 
-const FormItem = Form.Item;
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBInput,
+  MDBIcon,
+  MDBCheckbox,
+} from "mdb-react-ui-kit";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -62,73 +71,59 @@ const Login = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${background})`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        width: "100vw",
-        height: "100vh",
-      }}
-    >
-      <div className="loginLayout">
-        <div className="lItem">
-          <div className="loginImage">
-            <img
-              src={loginImg}
-              width="300"
-              style={{ position: "relative" }}
-              alt="login"
-            />
-          </div>
-          <div className="loginForm">
-            <h2>Login</h2>
-            <Spin spinning={loading}> {/* Wrap form with Spin */}
-              <Form className="login-form" onSubmitCapture={handleSubmmit}>
-                <FormItem>
-                  <Input
-                    prefix={<UserOutlined />}
-                    placeholder="Enter your Email address"
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setemail(e.target.value)}
-                    autoFocus
-                  />
-                </FormItem>
-                <FormItem>
-                  <Input
-                    prefix={<KeyOutlined />}
-                    placeholder="Enter your Password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoFocus
-                  />
-                </FormItem>
-                <FormItem>
-                  <Checkbox>Remember me</Checkbox>
-                </FormItem>
-                <Button
-                  name="submit"
-                  type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
-                  disabled={!email || password.length < 6 || loading}
+    <MDBContainer fluid>
+      <MDBRow className="d-flex justify-content-center align-items-center h-100">
+        <MDBCol col="12">
+          <MDBCard
+            className="bg-white my-5 mx-auto"
+            style={{ borderRadius: "1rem", maxWidth: "500px" }}
+          >
+            <MDBCardBody className="p-5 w-100 d-flex flex-column">
+              <h2 className="fw-bold mb-2 text-center">Sign in</h2>
+              <p className="text-white-50 mb-3">
+                Please enter your login and password!
+              </p>
+              <form onSubmit={handleSubmmit}>
+                <MDBInput
+                  wrapperClass="mb-4 w-100"
+                  label="Email address"
+                  id="formControlLg"
+                  type="email"
+                  size="lg"
+                  value={email} // Add this line
+                  onChange={(e) => setemail(e.target.value)} // Add this line
+                />
+                <MDBInput
+                  wrapperClass="mb-4 w-100"
+                  label="Password"
+                  id="formControlLg"
+                  type="password"
+                  size="lg"
+                  value={password} // Add this line
+                  onChange={(e) => setPassword(e.target.value)} // Add this line
+                />
+
+                <MDBCheckbox
+                  name="flexCheck"
+                  id="flexCheckDefault"
+                  className="mb-4"
+                  label="Remember password"
+                />
+
+                <MDBBtn
+                  className="mx-2 my-5 px-5 w-100"
+                  color="dark"
+                  size="lg"
+                  type="submit"
                 >
-                  Log in
-                </Button>
-                <br />
-                <br />
-                <br />
-              </Form>
-            </Spin>
-          </div>
-        </div>
-      </div>
-    </div>
+                  Login
+                </MDBBtn>
+              </form>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
 };
 
