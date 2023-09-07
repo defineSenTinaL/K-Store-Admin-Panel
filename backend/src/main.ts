@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { FirebaseAuthMiddleware } from './middleware/firebase.middleware';
 import * as express from 'express';
-import { GlobalExceptionFilter } from './filters/global-exception.filter';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
