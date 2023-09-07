@@ -1,8 +1,10 @@
 import * as admin from 'firebase-admin';
-import * as serviceAccount from './fbServiceAccountKey.json'; // Note the *as* keyword
+import config from './index';
+
+const serviceAccount = require(config.GOOGLE_APPLICATION_CREDENTIALS);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+  credential: admin.credential.cert(serviceAccount),
 });
 
 export default admin;
