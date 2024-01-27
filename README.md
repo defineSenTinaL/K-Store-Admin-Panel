@@ -28,9 +28,9 @@ Firebase account
 
 <br>
 <br>
-<img src="s1.png" width="1080px" />
-<img src="s2.png" width="1080px" />
-<img src="s3.png" width="1080px" />
+<img src="p1.png" width="1080px" />
+<img src="p2.png" width="1080px" />
+<img src="p3.png" width="1080px" />
 
 
 
