@@ -1,8 +1,8 @@
-#K-Store Admin Panel
+# K-Store Admin Panel
 Introduction
 K-Store Admin Panel is a comprehensive e-commerce administration platform designed to streamline and manage the backend operations of an online store. This robust panel allows administrators to efficiently handle products, coupons, categories, orders, returns, and user management with ease.
 
-Features
+# Features
 CRUD Operations for Products: Create, Read, Update, and Delete products easily.
 Coupon Management: Create and manage discount coupons.
 Category Management: Organize products into categories for easier navigation.
@@ -24,7 +24,17 @@ Prerequisites
 Node.js
 MongoDB
 Firebase account
-Installation
+
+
+<br>
+<br>
+<img src="s1.png" width="1080px" />
+<img src="s2.png" width="1080px" />
+<img src="s3.png" width="1080px" />
+
+
+
+# Installation
 Clone the repository
 
 bash
@@ -55,5 +65,5 @@ Copy code
 npm start
 Your app should now be running on localhost:3000.
 
-Contributing
+# Contributing
 Contributions to the K-Store Admin Panel are welcome! Please read our contributing guidelines for details on how to contribute.
